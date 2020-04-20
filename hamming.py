@@ -1,6 +1,7 @@
 #Kyle McColgan
 #19-April-2020
 #hamming.py
+#Hamming Single-bit Forward Error correction algorithm implementation in Python!
 
 import re
 
