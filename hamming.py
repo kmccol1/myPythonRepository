@@ -1,4 +1,3 @@
-#Kyle McColgan
 #19-April-2020
 #hamming.py
 #Python3 program implementation of Hamming single-bit forward
