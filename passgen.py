@@ -1,4 +1,3 @@
-#Kyle McColgan
 #15-May-2020
 #passgen.py
 
