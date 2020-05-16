@@ -1,4 +1,3 @@
-#Kyle McColgan
 #19-April-2020
 #transfer.py
 #simple file transfer script
