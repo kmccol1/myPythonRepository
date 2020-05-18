@@ -1,6 +1,6 @@
 #17-May-2020
 #passgen.py
-#Cryptographic random data password generator
+#Cryptographic random data password generator, now implements regex for filter.
 #Requires Python 3.7.4
 
 #******************************************************************************
