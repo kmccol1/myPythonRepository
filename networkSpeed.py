@@ -1,7 +1,7 @@
 #10-June-2020
 #mySpeedTester.py
 #A simple network transfer speed calculator.
-#Requires speedtest.py module
+#Requires speedtest.py module from https://pypi.org/project/speedtest-cli/
 #Requires Python 3.7.4
 
 import speedtest
