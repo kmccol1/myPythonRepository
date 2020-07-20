@@ -1,6 +1,6 @@
 #Simple network sniffer using Scapy API
 #7-20-20
-#Requires Python 3.8.4, Scapy API
+#Requires Python 3.8.4, Scapy API, Windows 10 OS
 
 from scapy.all import *
 from collections import Counter
@@ -45,9 +45,6 @@ def getLiveOutput ( ):
 
         sourceAddr = "%s (%s)" % ( hostDict [ sourceAddr ] , sourceAddr ) if hostDict [ sourceAddr ] is not None else sourceAddr
         destAddr = "%s (%s)" % ( hostDict[ destAddr ], destAddr ) if hostDict[ destAddr ] is not None else destAddr
-        #print ( displayBandwith( float ( bytesTransferred ) / captureLen ) , sourceAddr , destAddr )
-        #print ( displayBandwith( float ( bytesTransferred ) / captureLen ) , sourceAddr)
-
         bandwithFmt = displayBandwith( float ( bytesTransferred ) / captureLen )
 
 
