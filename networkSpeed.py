@@ -1,8 +1,8 @@
 #12-June-2020
 #mySpeedTester.py
 #A simple network transfer speed calculator script, set to execute every 5 minutes.
-#Requires speedtest.py module
-#Requires Python 3.7.4
+#Requires speedtest API for python interface
+#Requires Python 3.8.4
 
 import speedtest
 import time
