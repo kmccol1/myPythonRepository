@@ -10,7 +10,7 @@ from os import system
 
 #*******************************************************************************************
 
-captureLen = 30
+captureTimeInSeconds = 30
 networkInterface = "Wi-Fi"
 packetCounter = Counter()
 hostDict = {}
@@ -32,14 +32,14 @@ def displayBandwith ( totalBytes ):
 
 def filterPackets ( packet ):
     if IP in packet:
-        packet = packet [ IP ]
-        packetCounter.update ( { tuple ( sorted ( map ( atol , ( packet.src, packet.dst)))): packet.len})
+        ipPacket = packet [ IP ]
+        packetCounter.update ( { tuple ( sorted ( map ( atol , ( ipPacket.src, ipPacket.dst)))): ipPacket.len})
 
 #*******************************************************************************************
 
 def updatePacketCounter ( ):
     sniff ( iface = networkInterface, prn = filterPackets, store = False,
-        timeout = captureLen )
+        timeout = captureTimeInSeconds )
 
 #*******************************************************************************************
 
@@ -57,7 +57,7 @@ def printCommonHosts ( ):
 
         sourceAddr = "%s (%s)" % ( hostDict [ sourceAddr ] , sourceAddr ) if hostDict [ sourceAddr ] is not None else sourceAddr
         destAddr = "%s (%s)" % ( hostDict[ destAddr ], destAddr ) if hostDict[ destAddr ] is not None else destAddr
-        bandwithFmt = displayBandwith( float ( bytesTransferred ) / captureLen )
+        bandwithFmt = displayBandwith( float ( bytesTransferred ) / captureTimeInSeconds )
         print ( sourceAddr[0:20] , ' ' * ( 20 ), '=>' , destAddr[0:20] , ' ' * ( 20) , ' ' * 20 , bandwithFmt )
         print ( ) 
 
