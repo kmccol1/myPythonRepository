@@ -1,7 +1,6 @@
 #*******************************************************************************************
-#This program mimicks basic functionality of the well-known iftop.  It reads network traffic 
+#This program reads network traffic 
 #and displays a table of current bandwidth usage by pairs of host addresses.
-#7-21-20
 #Requires Python 3.8.4, Scapy network API
 #*******************************************************************************************
 
