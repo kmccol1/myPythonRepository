@@ -162,7 +162,7 @@ def bruteForce ( passwordLength ):
             
                 return final
 
-print ( "\n Welcome to a simple Python 3.7.4 crytographic password generator.")
+print ( "\n Welcome to a simple Python password generator:")
 
 while loopFlag == 'y':
     numPasswords = getNumberOfPasswords ( )
