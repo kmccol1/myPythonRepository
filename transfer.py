@@ -1,6 +1,7 @@
+#basic tool for moving large folders and contents, renames file and sorts by date
 #19-April-2020
 #transfer.py
-#simple file transfer script for desktop folders.
+#Python 3.8.4
 
 import os
 import os.path
