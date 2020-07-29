@@ -7,6 +7,8 @@
 from scapy.all import *
 from collections import Counter
 from os import system
+import threading
+import time
 
 #*******************************************************************************************
 
@@ -39,11 +41,12 @@ def filterPackets ( packet ):
 
 def updatePacketCounter ( ):
     sniff ( iface = networkInterface, prn = filterPackets, store = False,
-        timeout = captureTimeInSeconds )
+        timeout = None )
 
 #*******************************************************************************************
 
 def printCommonHosts ( ):
+    
     for ( sourceAddr , destAddr ), bytesTransferred in packetCounter.most_common(10):
         sourceAddr , destAddr = map ( ltoa , ( sourceAddr , destAddr ) )
 
@@ -58,8 +61,9 @@ def printCommonHosts ( ):
         sourceAddr = "%s (%s)" % ( hostDict [ sourceAddr ] , sourceAddr ) if hostDict [ sourceAddr ] is not None else sourceAddr
         destAddr = "%s (%s)" % ( hostDict[ destAddr ], destAddr ) if hostDict[ destAddr ] is not None else destAddr
         bandwithFmt = displayBandwith( float ( bytesTransferred ) / captureTimeInSeconds )
-        print ( sourceAddr[0:20] , ' ' * ( 20 ), '=>' , destAddr[0:20] , ' ' * ( 20) , ' ' * 20 , bandwithFmt )
-        print ( ) 
+        print ( sourceAddr[0:20] , ' ' * ( 20 + (len(sourceAddr) - 20) ), '=>' , destAddr[0:20] , ' ' * ( 20 + (len(destAddr) - 20)) , ' ' * (20 - (len(sourceAddr) + len(destAddr))) , bandwithFmt , flush = True)
+        print ( )
+
 
 #*******************************************************************************************
 
@@ -70,9 +74,19 @@ def printHeader ( ):
 
 #*******************************************************************************************
 
+def threadFunction():
+    #while True:
+    sniff ( iface = networkInterface, prn = filterPackets, store = False )
+
+
+myThread = threading.Thread ( target = threadFunction)
+myThread.start()
+
+printHeader()
+
 while True:
-    printHeader()
     printCommonHosts()
-    updatePacketCounter()
-    os.system ( 'cls')
+    time.sleep(3)
+    print ( '\r' * 20)
+
 
