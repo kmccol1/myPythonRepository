@@ -2,7 +2,7 @@
 #passgen.py
 #A cryptographically secure password generator using PRNG. A function for password
 #cracking using brute-force is also implemented.
-#Requires Python 3.7.4
+#Requires Python 3.8.4
 
 #******************************************************************************
 
