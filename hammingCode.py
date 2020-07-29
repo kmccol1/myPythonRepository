@@ -1,6 +1,6 @@
 #19-April-2020
 #hamming.py
-#Python3 program implementation of Hamming single-bit forward
+#implementation of Hamming single-bit forward
 #error correction algorithim.
 #Requires Python 3.8.4
 #Precondition: operates on 1 byte of data (8-bits).
