@@ -1,6 +1,6 @@
-#A useful network reconaissance tool using ARP for host discovery.
+#very basic network reconaissance tool using layer 2 for host discovery.
 #7-20-20
-#Requires Python 3.8.4, Scapy API, Windows 10 OS. IPv4 only.
+#Requires Python 3.8.4, Scapy API
 
 from scapy.all import *
 
