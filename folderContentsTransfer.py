@@ -1,6 +1,6 @@
 #basic tool for moving large folders and contents, renames file and sorts by date
 #19-April-2020
-#transfer.py
+#folderContentsTransfer.py
 #Python 3.8.4
 
 import os
