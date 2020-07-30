@@ -1,7 +1,7 @@
 #*******************************************************************************************
 #This program reads network traffic 
 #and displays a table of current bandwidth usage by pairs of host addresses.
-#Requires Python 3.8.4, Scapy network API
+#Requires Python 3.8.5, Scapy network API
 #*******************************************************************************************
 
 from scapy.all import *
