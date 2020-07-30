@@ -2,11 +2,15 @@
 #mySpeedTester.py
 #A simple network transfer speed calculator script, set to execute every 5 minutes.
 #Requires speedtest API for python interface
-#Requires Python 3.8.4
+#Requires Python 3.8.5
+
+#******************************************************************************
 
 import speedtest
 import time
 import datetime
+
+#******************************************************************************
 
 def calculateSpeeds ( ):
     myTest = speedtest . Speedtest ( )
@@ -35,3 +39,6 @@ with open ( 'speeds.txt' , 'w' ) as fout:
         fout.flush()
         numExecutions += 1
         time.sleep ( 300 - ((time.time() - startTime) % 300) )
+        
+        
+#******************************************************************************
