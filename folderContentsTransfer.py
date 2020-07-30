@@ -3,11 +3,15 @@
 #folderContentsTransfer.py
 #Python 3.8.5
 
+#******************************************************************************
+
 import os
 import os.path
 import shutil
 from datetime import datetime
 from os.path import getmtime
+
+#******************************************************************************
 
 folderPath = "/home/user/Desktop/Source"
 destinationPath = "/home/user/Desktop/Destination"
@@ -28,9 +32,8 @@ for image in imageList:
 	oldImagePath = os.path.join ( folderPath , image)
 	newImagePath = os.path.join ( newPath , image ) 
 
-#	shutil.move ( oldImagePath , newImagePath )
 	shutil.copy2 ( oldImagePath , newImagePath ) 
 
-
+#******************************************************************************
 
 
