@@ -6,7 +6,6 @@
 
 from scapy.all import *
 from collections import Counter
-from os import system
 import threading
 import time
 
