@@ -75,8 +75,7 @@ def printHeader ( ):
 #*******************************************************************************************
 
 def threadFunction():
-    #while True:
-    sniff ( iface = networkInterface, prn = filterPackets, store = False )
+    sniff ( iface = networkInterface, prn = filterPackets, store = False , timeout = None )
 
 
 myThread = threading.Thread ( target = threadFunction)
