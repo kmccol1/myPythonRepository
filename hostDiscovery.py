@@ -1,6 +1,7 @@
 #very basic network reconaissance tool using layer 2 broadcasting for host discovery.
+#hostDiscovery.py
 #7-20-20
-#Requires Python 3.8.5, Scapy library
+#Requires Python 3.8.5, Scapy Python interface.
 
 #******************************************************************************
 
