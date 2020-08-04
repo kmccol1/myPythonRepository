@@ -1,5 +1,5 @@
 #19-April-2020
-#hamming.py
+#hammingCode.py
 #implementation of Hamming single-bit forward
 #error correction algorithim.
 #Requires Python 3.8.5
