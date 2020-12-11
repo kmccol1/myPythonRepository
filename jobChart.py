@@ -13,7 +13,55 @@ import pickle
 #*******************************************************************************
 
 def main ( ):
-    printMenu ( )
+    choice = -1
+
+    while choice != 5:
+        printMenu ( )
+        choice = getChoice ( )
+        processChoice ( )
+
+#*******************************************************************************
+
+class Application:
+    def __init__ ( self, jobID, title, companyName ):
+        self.__jobID = jobID
+        self.__title = title
+        self.__companyName = companyName
+
+#*******************************************************************************
+    
+    def getJobID ( self ):
+        return self.__jobID
+
+#*******************************************************************************
+
+    def getTitle ( self ):
+        return self.__title
+
+#*******************************************************************************
+
+    def getCompanyName ( self ):
+        return self.__companyName
+
+#*******************************************************************************
+
+    def setJobID ( self, jobID ):
+        self.__jobID = jobID
+
+#*******************************************************************************
+    def setTitle ( self, title ):
+        self.__title = title
+
+#*******************************************************************************
+
+    def setCompanyName ( self, companyName ):
+        self.__companyName = companyName
+
+#*******************************************************************************
+
+    def __str__ ( self ):
+        print ( f'Company Name: {self.getCompanyName()} \
+                \nJob ID: {self.getJobID()}\nTitle: {self.getTitle( )}\n')
 
 #*******************************************************************************
 
@@ -57,6 +105,7 @@ def processChoice ( choice ):
 #*******************************************************************************
 
 def addApplication ( ):
+
 
 #*******************************************************************************
 
