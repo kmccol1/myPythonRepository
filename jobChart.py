@@ -9,16 +9,18 @@ import sqlite3
 import tkinter
 import sys
 import pickle
+import random
 
 #*******************************************************************************
 
 def main ( ):
+    applicationDict = { }
     choice = -1
 
     while choice != 5:
         printMenu ( )
         choice = getChoice ( )
-        processChoice ( )
+        processChoice ( choice, applicationDict )
 
 #*******************************************************************************
 
@@ -90,34 +92,36 @@ def getChoice ( ):
 
 #*******************************************************************************
 
-def processChoice ( choice ):
+def processChoice ( choice, applicationDict ):
     if choice == 1:
-        addApplication ( )
+        addApplication ( applicationDict )
     elif choice == 2:
-        updateApplication ( )
+        updateApplication ( applicationDict )
     elif choice == 3:
-        display ( )
+        display ( applicationDict )
     elif choice == 4:
-        getStatistics ( )
+        getStatistics ( applicationDict )
     else:
         sys.exit ( )
 
 #*******************************************************************************
 
-def addApplication ( ):
+def addApplication ( applicationDict ):
+    jobID = random.randrange(0,9999)
+    jobTitle = input('Enter job title: ' )
+    companyName = input ('Enter company: ' )
+    
+#*******************************************************************************
 
+def updateApplication ( applicationDict ):
 
 #*******************************************************************************
 
-def updateApplication ( ):
+def display ( applicationDict ):
 
 #*******************************************************************************
 
-def display ( ):
-
-#*******************************************************************************
-
-def getStatistics ( ):
+def getStatistics ( applicationDict ):
 
 #*******************************************************************************
 
