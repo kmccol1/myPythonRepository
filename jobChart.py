@@ -5,7 +5,6 @@
 #11 December 2020
 #*******************************************************************************
 
-import sqlite3
 import tkinter
 import sys
 import pickle
@@ -62,8 +61,8 @@ class Application:
 #*******************************************************************************
 
     def __str__ ( self ):
-        print ( f'Company Name: {self.getCompanyName()} \
-                \nJob ID: {self.getJobID()}\nTitle: {self.getTitle( )}\n')
+        return f'Company Name: {self.getCompanyName()} \
+                \nJob ID: {self.getJobID()}\nTitle: {self.getTitle( )}\n'
 
 #*******************************************************************************
 
@@ -83,11 +82,13 @@ def getChoice ( ):
 
     while choice < 1 or choice > 5:
         try:
-            choice = int ( input ('Enter choice: ' )
+            choice = int ( input ('Enter choice: ' ))
 
             if choice < 1 or choice > 5:
                 print('Please try again: Enter a valid option: ' )
-
+        except ValueError as error:
+            print('Error: Enter a valid option (1-5)', error )
+    
     return choice
 
 #*******************************************************************************
@@ -110,18 +111,42 @@ def addApplication ( applicationDict ):
     jobID = random.randrange(0,9999)
     jobTitle = input('Enter job title: ' )
     companyName = input ('Enter company: ' )
-    
+
+    applicationDict [companyName] = Application(jobID,jobTitle,companyName)
+
+    try:
+        outFile = open ('jobChartData.pickle', 'wb' )
+        pickle.dump(applicationDict, outFile )
+    except OSError as error:
+        print('Error: error saving to the file.', error )
+
 #*******************************************************************************
 
 def updateApplication ( applicationDict ):
+    print ('Hello')
 
 #*******************************************************************************
 
 def display ( applicationDict ):
+    print ('Opening flowchart display' )
+    myWindow = tkinter.Tk ( )
+
+    myCanvas = tkinter.Canvas( )
+
+
+
+
+
+
+    myCanvas.pack ( )
+    myWindow.mainloop ( )
 
 #*******************************************************************************
 
 def getStatistics ( applicationDict ):
+
+    for job, company in applicationDict.items ( ):
+        print ( job, str(company))
 
 #*******************************************************************************
 
