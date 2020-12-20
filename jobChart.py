@@ -1,8 +1,8 @@
 #*******************************************************************************
-#Kyle McColgan
-#jobChart.py
-#This program visualizes my job applications in a flowchart.
-#11 December 2020
+#    Kyle McColgan
+#    jobChart.py - Python 3.9.0
+#    This program visualizes my job applications in a flowchart.
+#    20 December 2020
 #*******************************************************************************
 
 import tkinter
@@ -15,6 +15,8 @@ import random
 def main ( ):
     applicationDict = { }
     choice = -1
+
+    loadDict ( applicationDict )
 
     while choice != 5:
         printMenu ( )
@@ -63,6 +65,15 @@ class Application:
     def __str__ ( self ):
         return f'Company Name: {self.getCompanyName()} \
                 \nJob ID: {self.getJobID()}\nTitle: {self.getTitle( )}\n'
+
+#*******************************************************************************
+
+def loadDict ( applicationDict ):
+    try:
+        inFile = open('jobChartData.pickle', 'rb')
+        pickle.load(inFile, applicationDict )
+    except OSError as error:
+        print ('Error: failed while reading data from file', error )
 
 #*******************************************************************************
 
