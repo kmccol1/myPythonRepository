@@ -13,12 +13,13 @@ import random
 #*******************************************************************************
 
 def main ( ):
-    applicationDict = { }
+    QUIT = 5
     choice = -1
+    applicationDict = { }
 
-    loadDict ( applicationDict )
+    applicationDict = loadDict ( )
 
-    while choice != 5:
+    while choice != QUIT:
         printMenu ( )
         choice = getChoice ( )
         processChoice ( choice, applicationDict )
@@ -30,6 +31,13 @@ class Application:
         self.__jobID = jobID
         self.__title = title
         self.__companyName = companyName
+
+#*******************************************************************************
+
+    def __init__ ( self ):
+        self.__jobID = 0
+        self.__title = ' '
+        self.__companyName = ' '
 
 #*******************************************************************************
     
@@ -68,12 +76,18 @@ class Application:
 
 #*******************************************************************************
 
-def loadDict ( applicationDict ):
+def loadDict ( ):
+    applicationDict = {' ': [ ]}
+
     try:
         inFile = open('jobChartData.pickle', 'rb')
-        pickle.load(inFile, applicationDict )
+        applicationDict = pickle.load(inFile)
     except OSError as error:
         print ('Error: failed while reading data from file', error )
+    finally:
+        inFile.close()
+
+    return applicationDict
 
 #*******************************************************************************
 
@@ -89,29 +103,36 @@ def printMenu ( ):
 #*******************************************************************************
 
 def getChoice ( ):
+    MIN_CHOICE = 1
+    MAX_CHOICE = 5
     choice = -1
 
-    while choice < 1 or choice > 5:
+    while ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
         try:
             choice = int ( input ('Enter choice: ' ))
 
-            if choice < 1 or choice > 5:
+            if ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
                 print('Please try again: Enter a valid option: ' )
         except ValueError as error:
-            print('Error: Enter a valid option (1-5)', error )
+            print(f'Error: Enter a valid option ({MIN_CHOICE}-{MAX_CHOICE})', error )
     
     return choice
 
 #*******************************************************************************
 
 def processChoice ( choice, applicationDict ):
-    if choice == 1:
+    ADD_JOB = 1
+    UPDATE_JOB = 2
+    OPEN_CHART = 3
+    PRINT_JOBS = 4
+
+    if choice == ADD_JOB:
         addApplication ( applicationDict )
-    elif choice == 2:
+    elif choice == UPDATE_JOB:
         updateApplication ( applicationDict )
-    elif choice == 3:
+    elif choice == OPEN_CHART:
         display ( applicationDict )
-    elif choice == 4:
+    elif choice == PRINT_JOBS:
         getStatistics ( applicationDict )
     else:
         sys.exit ( )
@@ -119,22 +140,33 @@ def processChoice ( choice, applicationDict ):
 #*******************************************************************************
 
 def addApplication ( applicationDict ):
-    jobID = random.randrange(0,9999)
+    MIN_ID = 0
+    MAX_ID = 9999
+
+    jobID = random.randrange(MIN_ID, MAX_ID)
     jobTitle = input('Enter job title: ' )
     companyName = input ('Enter company: ' )
 
-    applicationDict [companyName] = Application(jobID,jobTitle,companyName)
+    if companyName not in applicationDict.keys():
+        applicationDict [companyName] = [Application(jobID,jobTitle,companyName), ]
+    else:
+        (applicationDict[companyName]).append(Application(jobID,jobTitle,companyName))
 
     try:
         outFile = open ('jobChartData.pickle', 'wb' )
         pickle.dump(applicationDict, outFile )
     except OSError as error:
         print('Error: error saving to the file.', error )
+    finally:
+        outFile.close()
 
 #*******************************************************************************
 
 def updateApplication ( applicationDict ):
-    print ('Hello')
+    companyName = input('Enter company: ')
+
+    print (applicationDict[companyName])
+    jobID = int(input('Chose a job ID to update: ' ))
 
 #*******************************************************************************
 
@@ -143,11 +175,6 @@ def display ( applicationDict ):
     myWindow = tkinter.Tk ( )
 
     myCanvas = tkinter.Canvas( )
-
-
-
-
-
 
     myCanvas.pack ( )
     myWindow.mainloop ( )
