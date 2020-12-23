@@ -33,13 +33,6 @@ class Application:
         self.__companyName = companyName
 
 #*******************************************************************************
-
-    def __init__ ( self ):
-        self.__jobID = 0
-        self.__title = ' '
-        self.__companyName = ' '
-
-#*******************************************************************************
     
     def getJobID ( self ):
         return self.__jobID
@@ -77,13 +70,15 @@ class Application:
 #*******************************************************************************
 
 def loadDict ( ):
-    applicationDict = {' ': [ ]}
+    applicationDict = {}
 
     try:
         inFile = open('jobChartData.pickle', 'rb')
         applicationDict = pickle.load(inFile)
     except OSError as error:
         print ('Error: failed while reading data from file', error )
+    except EOFError as error:
+        print ('No saved data to load, creating new file.')
     finally:
         inFile.close()
 
@@ -92,8 +87,10 @@ def loadDict ( ):
 #*******************************************************************************
 
 def printMenu ( ):
+    NUM_SEPARATOR = 81
+
     print ('Main menu')
-    print ('-' * 81)
+    print ('-' * NUM_SEPARATOR)
     print ('1. Add a new application')
     print ('2. Update application status')
     print ('3. Display flowchart')
@@ -135,6 +132,7 @@ def processChoice ( choice, applicationDict ):
     elif choice == PRINT_JOBS:
         getStatistics ( applicationDict )
     else:
+        print ( '\nExiting the program. Goodbye' )
         sys.exit ( )
 
 #*******************************************************************************
@@ -148,9 +146,9 @@ def addApplication ( applicationDict ):
     companyName = input ('Enter company: ' )
 
     if companyName not in applicationDict.keys():
-        applicationDict [companyName] = [Application(jobID,jobTitle,companyName), ]
+        applicationDict [companyName] = [Application(jobID,jobTitle,companyName)]
     else:
-        (applicationDict[companyName]).append(Application(jobID,jobTitle,companyName))
+        (applicationDict[companyName]).append((Application(jobID,jobTitle,companyName)))
 
     try:
         outFile = open ('jobChartData.pickle', 'wb' )
@@ -182,9 +180,11 @@ def display ( applicationDict ):
 #*******************************************************************************
 
 def getStatistics ( applicationDict ):
+    NUM_SEPARATOR = 10
 
-    for job, company in applicationDict.items ( ):
-        print ( job, str(company))
+    for company, applicationList in applicationDict.items ( ):
+        for position in applicationList:
+            print (f'{company}', '-' * NUM_SEPARATOR, str(position) )
 
 #*******************************************************************************
 
