@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.0
 #    This program visualizes my job applications in a flowchart.
-#    20 December 2020
+#    23 December 2020
 #*******************************************************************************
 
 import tkinter
@@ -161,10 +161,26 @@ def addApplication ( applicationDict ):
 #*******************************************************************************
 
 def updateApplication ( applicationDict ):
+    MIN_ID = 0
+    MAX_ID = 9999
+
+    validJobID = []
+    selectedID = -1
     companyName = input('Enter company: ')
 
-    print (applicationDict[companyName])
-    jobID = int(input('Chose a job ID to update: ' ))
+    if companyName in applicationDict:
+        for app in applicationDict[companyName]:
+            validJobID.append ( app.getJobID ( ) )
+            print ( str(app))
+
+    while selectedID < MIN_ID or selectedID > MAX_ID:
+        try:
+            selectedID = int(input('Chose a job ID to update: ' ))
+
+            if selectedID < MIN_ID or selectedID > MAX_ID:
+                print ('Error: please input a valid Job ID to update. Please try again.' )
+        except ValueError or TypeError as error:
+            print ('Error: please enter a valid job ID number value from above.' , error )
 
 #*******************************************************************************
 
