@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.0
 #    This program visualizes my job applications in a flowchart.
-#    23 December 2020
+#    27 December 2020
 #*******************************************************************************
 
 import tkinter
@@ -179,8 +179,33 @@ def updateApplication ( applicationDict ):
 
             if selectedID < MIN_ID or selectedID > MAX_ID:
                 print ('Error: please input a valid Job ID to update. Please try again.' )
-        except ValueError or TypeError as error:
+            else:
+                outFile = open('jobChartData.pickle', 'wb' )
+
+                for position in applicationDict[companyName]:
+                    if position.getJobID() == selectedID:
+                        jobID = random.randrange(MIN_ID, MAX_ID)
+                        jobTitle = input('Enter job title: ' )
+                        companyName = input ('Enter company: ' )
+
+                        if companyName not in applicationDict.keys():
+                            applicationDict [companyName] = [Application(jobID,jobTitle,companyName)]
+                        else:
+                            del position
+                            (applicationDict[companyName]).append((Application(jobID,jobTitle,companyName)))
+
+                        position.setJobID ( jobID )
+                        position.setCompanyName( companyName )
+                        position.setTitle ( jobTitle )
+
+                        pickle.dump(applicationDict, outFile )
+
+        except OSError as error:
+            print ('Error occured while writing to file.' , error )
+        except ValueError or TypeError or EOFError as error:
             print ('Error: please enter a valid job ID number value from above.' , error )
+        finally:
+            outFile.close ( )
 
 #*******************************************************************************
 
