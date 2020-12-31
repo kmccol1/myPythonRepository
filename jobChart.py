@@ -1,7 +1,7 @@
 #*******************************************************************************
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.0
-#    This program visualizes my job applications in a flowchart.
+#    This program visualizes my job applications in a tkinter graph.
 #    27 December 2020
 #*******************************************************************************
 
@@ -164,20 +164,22 @@ def updateApplication ( applicationDict ):
     MIN_ID = 0
     MAX_ID = 9999
 
-    validJobID = []
     selectedID = -1
-    companyName = input('Enter company: ')
+    outFile = None
+    validJobID = []
+
+    companyName = input('Enter company to update an application: ')
 
     if companyName in applicationDict:
         for app in applicationDict[companyName]:
             validJobID.append ( app.getJobID ( ) )
             print ( str(app))
 
-    while selectedID < MIN_ID or selectedID > MAX_ID:
+    while ( selectedID < MIN_ID ) or ( selectedID > MAX_ID ):
         try:
-            selectedID = int(input('Chose a job ID to update: ' ))
+            selectedID = int(input('Choose a job ID to update: ' ))
 
-            if selectedID < MIN_ID or selectedID > MAX_ID:
+            if ( selectedID < MIN_ID ) or ( selectedID > MAX_ID ):
                 print ('Error: please input a valid Job ID to update. Please try again.' )
             else:
                 outFile = open('jobChartData.pickle', 'wb' )
@@ -185,24 +187,20 @@ def updateApplication ( applicationDict ):
                 for position in applicationDict[companyName]:
                     if position.getJobID() == selectedID:
                         jobID = random.randrange(MIN_ID, MAX_ID)
-                        jobTitle = input('Enter job title: ' )
-                        companyName = input ('Enter company: ' )
+                        jobTitle = input('Enter new job title: ' )
+                        companyName = input ('Enter new company name: ' )
+
+                        applicationDict[companyName].remove(position)
 
                         if companyName not in applicationDict.keys():
                             applicationDict [companyName] = [Application(jobID,jobTitle,companyName)]
                         else:
-                            del position
                             (applicationDict[companyName]).append((Application(jobID,jobTitle,companyName)))
 
-                        position.setJobID ( jobID )
-                        position.setCompanyName( companyName )
-                        position.setTitle ( jobTitle )
-
                         pickle.dump(applicationDict, outFile )
-
         except OSError as error:
             print ('Error occured while writing to file.' , error )
-        except ValueError or TypeError or EOFError as error:
+        except ( ValueError or TypeError ) as error:
             print ('Error: please enter a valid job ID number value from above.' , error )
         finally:
             outFile.close ( )
