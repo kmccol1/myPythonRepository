@@ -1,7 +1,7 @@
 #*******************************************************************************
 #    Kyle McColgan
-#    jobChart.py - Python 3.9.0
-#    This program visualizes my job applications in a tkinter graph.
+#    jobChart.py - Python 3.9.1
+#    This program visualizes my job applications in a sankey flowchart.
 #    27 December 2020
 #*******************************************************************************
 
@@ -9,6 +9,8 @@ import tkinter
 import sys
 import pickle
 import random
+import matplotlib.pyplot as plt
+from matplotlib.sankey import Sankey
 
 #*******************************************************************************
 
@@ -209,12 +211,22 @@ def updateApplication ( applicationDict ):
 
 def display ( applicationDict ):
     print ('Opening flowchart display' )
-    myWindow = tkinter.Tk ( )
+    fig = plt.figure()
 
-    myCanvas = tkinter.Canvas( )
+    subPlot = fig.add_subplot(1,1,1,xticks=[],yticks=[],
+                              title='Flow Diagram of Jobs')
 
-    myCanvas.pack ( )
-    myWindow.mainloop ( )
+    myChart = Sankey(ax=subPlot, scale = 0.01, offset=0.2,head_angle=180,
+                     format='%.0f', unit='%')
+
+    myChart.add(flows=[25, 0, 60, 10], labels=['', '', '', 'No Response'],
+                orientations=[-1, 1, 0, 1], pathlengths=[0.25, 0.25, 0.25, 0.25])
+
+    diagrams = myChart.finish()
+    diagrams[0].texts[-1].set_color('r')
+    diagrams[0].text.set_fontweight('bold')
+
+    plt.show()
 
 #*******************************************************************************
 
