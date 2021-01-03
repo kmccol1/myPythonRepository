@@ -2,10 +2,9 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    27 December 2020
+#    3 January 2021
 #*******************************************************************************
 
-import tkinter
 import sys
 import pickle
 import random
@@ -29,10 +28,11 @@ def main ( ):
 #*******************************************************************************
 
 class Application:
-    def __init__ ( self, jobID, title, companyName ):
+    def __init__ ( self, jobID, title, companyName, jobStatus = 0 ):
         self.__jobID = jobID
         self.__title = title
         self.__companyName = companyName
+        self.__jobStatus = jobStatus
 
 #*******************************************************************************
     
@@ -48,6 +48,16 @@ class Application:
 
     def getCompanyName ( self ):
         return self.__companyName
+
+#*******************************************************************************
+
+    def getJobStatus ( self ):
+        return self.__jobStatus
+
+#*******************************************************************************
+    
+    def setJobStatus ( self, jobStatus ):
+        self.__jobStatus = jobStatus
 
 #*******************************************************************************
 
@@ -165,7 +175,10 @@ def addApplication ( applicationDict ):
 def updateApplication ( applicationDict ):
     MIN_ID = 0
     MAX_ID = 9999
+    MIN_STATUS = -1
+    MAX_STATUS = 3
 
+    status = -2
     selectedID = -1
     outFile = None
     validJobID = []
@@ -189,17 +202,28 @@ def updateApplication ( applicationDict ):
                 for position in applicationDict[companyName]:
                     if position.getJobID() == selectedID:
                         jobID = random.randrange(MIN_ID, MAX_ID)
-                        jobTitle = input('Enter new job title: ' )
                         companyName = input ('Enter new company name: ' )
+                        jobTitle = input('Enter new job title: ' )
+                        
+                        while ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
+                            try:
+                                status = int ( input ('Enter current application status: \
+                                                      \n[-1 == Rejection, 0 == No response, 1 == Interview...]: ' ))
+
+                                if ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
+                                    print(f'Error: Enter a valid status in range ({MIN_STATUS}-{MAX_STATUS})' )
+                            except ValueError as error:
+                                print(f'Error: Enter a valid status from ({MIN_STATUS}-{MAX_STATUS})', error )
 
                         applicationDict[companyName].remove(position)
 
                         if companyName not in applicationDict.keys():
-                            applicationDict [companyName] = [Application(jobID,jobTitle,companyName)]
+                            applicationDict [companyName] = [Application(jobID,jobTitle,companyName, status)]
                         else:
-                            (applicationDict[companyName]).append((Application(jobID,jobTitle,companyName)))
+                            applicationDict[companyName].append((Application(jobID,jobTitle,companyName, status)))
 
-                        pickle.dump(applicationDict, outFile )
+                        pickle.dump ( applicationDict, outFile )
+
         except OSError as error:
             print ('Error occured while writing to file.' , error )
         except ( ValueError or TypeError ) as error:
@@ -210,20 +234,34 @@ def updateApplication ( applicationDict ):
 #*******************************************************************************
 
 def display ( applicationDict ):
+    numReject = 0
+    numGhost = 0
+    statisticsList = []
+
+    for company, applicationList in applicationDict.items ( ):
+        for position in applicationList:
+            if position.getJobStatus() == -1:
+                numReject += 1
+            elif position.getJobStatus() == 0:
+                numGhost += 1
+
+    statisticsList.append(numReject)
+    statisticsList.append(numGhost)
+            
     print ('Opening flowchart display' )
     fig = plt.figure()
 
     subPlot = fig.add_subplot(1,1,1,xticks=[],yticks=[],
-                              title='Flow Diagram of Jobs')
+                              title='Sankey Diagram of Job Applications')
 
     myChart = Sankey(ax=subPlot, scale = 0.01, offset=0.2,head_angle=180,
-                     format='%.0f', unit='%')
+                     format='%.0f', unit=' Applications')
 
-    myChart.add(flows=[25, 0, 60, 10], labels=['', '', '', 'No Response'],
-                orientations=[-1, 1, 0, 1], pathlengths=[0.25, 0.25, 0.25, 0.25])
+    myChart.add(flows= statisticsList, labels=['Rejected Immediately', 'No Response'],
+                orientations=[0,0], pathlengths=[0.5, 0.5])
 
     diagrams = myChart.finish()
-    diagrams[0].texts[-1].set_color('r')
+    diagrams[0].texts[-1].set_color('b')
     diagrams[0].text.set_fontweight('bold')
 
     plt.show()
