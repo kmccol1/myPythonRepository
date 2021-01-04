@@ -234,19 +234,26 @@ def updateApplication ( applicationDict ):
 #*******************************************************************************
 
 def display ( applicationDict ):
+    REJECT_STATUS = -1
+    GHOST_STATUS = 0
+
     numReject = 0
     numGhost = 0
+    totalNumApplications = 0
     statisticsList = []
 
     for company, applicationList in applicationDict.items ( ):
         for position in applicationList:
-            if position.getJobStatus() == -1:
+            if position.getJobStatus() == REJECT_STATUS:
                 numReject += 1
-            elif position.getJobStatus() == 0:
+            elif position.getJobStatus() == GHOST_STATUS:
                 numGhost += 1
 
-    statisticsList.append(numReject)
-    statisticsList.append(numGhost)
+    totalNumApplications = numReject + numGhost
+
+    statisticsList.append(-numReject)
+    statisticsList.append(-numGhost)
+    statisticsList.append(totalNumApplications)
             
     print ('Opening flowchart display' )
     fig = plt.figure()
@@ -254,14 +261,17 @@ def display ( applicationDict ):
     subPlot = fig.add_subplot(1,1,1,xticks=[],yticks=[],
                               title='Sankey Diagram of Job Applications')
 
-    myChart = Sankey(ax=subPlot, scale = 0.01, offset=0.2,head_angle=180,
+    myChart = Sankey(ax=subPlot, scale = 0.1, offset=0.25,head_angle=180,
                      format='%.0f', unit=' Applications')
 
-    myChart.add(flows= statisticsList, labels=['Rejected Immediately', 'No Response'],
-                orientations=[0,0], pathlengths=[0.5, 0.5])
+    myChart.add(flows= statisticsList, labels=['Rejected', 'No Response',
+                f'Results of {totalNumApplications} Job Applications'],
+                orientations=[0,0,0], pathlengths=[0.5, 0.5, 0.5],
+                facecolor = 'r')
 
     diagrams = myChart.finish()
     diagrams[0].texts[-1].set_color('b')
+    diagrams[0].texts[-1].set_fontweight('bold')
     diagrams[0].text.set_fontweight('bold')
 
     plt.show()
