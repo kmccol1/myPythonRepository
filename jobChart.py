@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    3 January 2021
+#    4 January 2021
 #*******************************************************************************
 
 import sys
