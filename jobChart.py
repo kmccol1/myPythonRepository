@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    4 January 2021
+#    5 January 2021
 #*******************************************************************************
 
 import sys
@@ -76,8 +76,18 @@ class Application:
 #*******************************************************************************
 
     def __str__ ( self ):
-        return f'Company Name: {self.getCompanyName()} \
-                \nJob ID: {self.getJobID()}\nTitle: {self.getTitle( )}\n'
+        REJECT_STATUS = -1
+        GHOST_STATUS = 0
+
+        result = f'Company Name: {self.getCompanyName()} \
+                  \nRole: {self.getTitle()}\nJob ID: {self.getTitle( )}'
+        
+        if self.getJobStatus() == GHOST_STATUS:
+            result += 'Status: No response.\n'
+        elif self.getJobStatus() == REJECT_STATUS:
+            result += 'Status: Application rejected.\n'
+
+        return result
 
 #*******************************************************************************
 
@@ -101,7 +111,7 @@ def loadDict ( ):
 def printMenu ( ):
     NUM_SEPARATOR = 81
 
-    print ('Main menu')
+    print ('\nJob Flowchart Main Menu')
     print ('-' * NUM_SEPARATOR)
     print ('1. Add a new application')
     print ('2. Update application status')
@@ -118,12 +128,12 @@ def getChoice ( ):
 
     while ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
         try:
-            choice = int ( input ('Enter choice: ' ))
+            choice = int ( input ('\nEnter menu choice: ' ))
 
             if ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
-                print('Please try again: Enter a valid option: ' )
+                print(f'Error: enter a valid menu option from ({MIN_CHOICE}-{MAX_CHOICE})' )
         except ValueError as error:
-            print(f'Error: Enter a valid option ({MIN_CHOICE}-{MAX_CHOICE})', error )
+            print(f'Error: Please enter a positive value in range ({MIN_CHOICE}-{MAX_CHOICE})', error )
     
     return choice
 
@@ -215,7 +225,8 @@ def updateApplication ( applicationDict ):
                             except ValueError as error:
                                 print(f'Error: Enter a valid status from ({MIN_STATUS}-{MAX_STATUS})', error )
 
-                        applicationDict[companyName].remove(position)
+                        if ( companyName in applicationDict ) and ( position in applicationDict[companyName] ):
+                            applicationDict[companyName].remove(position)
 
                         if companyName not in applicationDict.keys():
                             applicationDict [companyName] = [Application(jobID,jobTitle,companyName, status)]
@@ -259,13 +270,12 @@ def display ( applicationDict ):
     fig = plt.figure()
 
     subPlot = fig.add_subplot(1,1,1,xticks=[],yticks=[],
-                              title='Sankey Diagram of Job Applications')
+                              title='Sankey Diagram - Employment Search 2021')
 
     myChart = Sankey(ax=subPlot, scale = 0.1, offset=0.25,head_angle=180,
                      format='%.0f', unit=' Applications')
 
-    myChart.add(flows= statisticsList, labels=['Rejected', 'No Response',
-                f'Results of {totalNumApplications} Job Applications'],
+    myChart.add(flows= statisticsList, labels=['Rejected', 'No Response','Total: '],
                 orientations=[0,0,0], pathlengths=[0.5, 0.5, 0.5],
                 facecolor = 'r')
 
@@ -279,11 +289,22 @@ def display ( applicationDict ):
 #*******************************************************************************
 
 def getStatistics ( applicationDict ):
-    NUM_SEPARATOR = 10
+    NUM_SEPARATOR = 81
+
+    totalApplications = 0
 
     for company, applicationList in applicationDict.items ( ):
-        for position in applicationList:
-            print (f'{company}', '-' * NUM_SEPARATOR, str(position) )
+        totalApplications += len(applicationList)
+
+    print ('\n***Employment application statistics***')
+    print ('-' * NUM_SEPARATOR)
+    print(f'There are {totalApplications} applications across {len(applicationDict)} different companies.')
+    print('ex: Company name - Number of applications\n')
+
+    print ('-' * NUM_SEPARATOR)
+    for company, applicationList in applicationDict.items ( ):
+        print (f'{company} - {len(applicationList)} job applications')
+    print ('-' * NUM_SEPARATOR)
 
 #*******************************************************************************
 
