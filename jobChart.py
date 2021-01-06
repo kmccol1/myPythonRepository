@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    5 January 2021
+#    6 January 2021
 #*******************************************************************************
 
 import sys
@@ -218,7 +218,7 @@ def updateApplication ( applicationDict ):
                         while ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
                             try:
                                 status = int ( input ('Enter current application status: \
-                                                      \n[-1 == Rejection, 0 == No response, 1 == Interview...]: ' ))
+                                                      \n[-1 == Rejection, 0 == No response, 1 == Interview]: ' ))
 
                                 if ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
                                     print(f'Error: Enter a valid status in range ({MIN_STATUS}-{MAX_STATUS})' )
@@ -273,7 +273,7 @@ def display ( applicationDict ):
                               title='Sankey Diagram - Employment Search 2021')
 
     myChart = Sankey(ax=subPlot, scale = 0.1, offset=0.25,head_angle=180,
-                     format='%.0f', unit=' Applications')
+                     format='%.0f', unit=' Job applications')
 
     myChart.add(flows= statisticsList, labels=['Rejected', 'No Response','Total: '],
                 orientations=[0,0,0], pathlengths=[0.5, 0.5, 0.5],
@@ -289,22 +289,26 @@ def display ( applicationDict ):
 #*******************************************************************************
 
 def getStatistics ( applicationDict ):
+    MIN_SIZE = 0
     NUM_SEPARATOR = 81
 
     totalApplications = 0
-
-    for company, applicationList in applicationDict.items ( ):
-        totalApplications += len(applicationList)
+    size = len(applicationDict)
 
     print ('\n***Employment application statistics***')
     print ('-' * NUM_SEPARATOR)
-    print(f'There are {totalApplications} applications across {len(applicationDict)} different companies.')
-    print('ex: Company name - Number of applications\n')
+    print('Formatting example: Company name - Number of applications')
+    print ('-' * NUM_SEPARATOR)
 
-    print ('-' * NUM_SEPARATOR)
-    for company, applicationList in applicationDict.items ( ):
-        print (f'{company} - {len(applicationList)} job applications')
-    print ('-' * NUM_SEPARATOR)
+    if size > MIN_SIZE:
+        for company, applicationList in applicationDict.items ( ):
+            totalApplications += len(applicationList)
+            print (f'{company} - {len(applicationList)} job applications')
+
+        print ('-' * NUM_SEPARATOR)
+        print (f'You have {totalApplications} total job applications to {size} different companies.')
+    else:
+        print ('\nThere are no current job applications to display.')
 
 #*******************************************************************************
 
