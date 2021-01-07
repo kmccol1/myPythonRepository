@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    6 January 2021
+#    5 January 2021
 #*******************************************************************************
 
 import sys
@@ -83,9 +83,9 @@ class Application:
                   \nRole: {self.getTitle()}\nJob ID: {self.getTitle( )}'
         
         if self.getJobStatus() == GHOST_STATUS:
-            result += 'Status: No response.\n'
+            result += '\nStatus: No response.'
         elif self.getJobStatus() == REJECT_STATUS:
-            result += 'Status: Application rejected.\n'
+            result += '\nStatus: Application rejected.'
 
         return result
 
@@ -98,9 +98,9 @@ def loadDict ( ):
         inFile = open('jobChartData.pickle', 'rb')
         applicationDict = pickle.load(inFile)
     except OSError as error:
-        print ('Error: failed while reading data from file', error )
+        print ('Error: failed to read from file', error )
     except EOFError as error:
-        print ('No saved data to load, creating new file.')
+        print ('No previous file found, creating a new file.', error)
     finally:
         inFile.close()
 
@@ -111,6 +111,7 @@ def loadDict ( ):
 def printMenu ( ):
     NUM_SEPARATOR = 81
 
+    print ('-' * NUM_SEPARATOR)
     print ('\nJob Flowchart Main Menu')
     print ('-' * NUM_SEPARATOR)
     print ('1. Add a new application')
@@ -118,6 +119,7 @@ def printMenu ( ):
     print ('3. Display flowchart')
     print ('4. Display statistics' )
     print ('5. Quit')
+    print ('-' * NUM_SEPARATOR)
 
 #*******************************************************************************
 
