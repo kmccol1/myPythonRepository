@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    5 January 2021
+#    8 January 2021
 #*******************************************************************************
 
 import sys
@@ -80,7 +80,7 @@ class Application:
         GHOST_STATUS = 0
 
         result = f'Company Name: {self.getCompanyName()} \
-                  \nRole: {self.getTitle()}\nJob ID: {self.getTitle( )}'
+                  \nRole: {self.getTitle()}\nJob ID: {self.getJobID( )}'
         
         if self.getJobStatus() == GHOST_STATUS:
             result += '\nStatus: No response.'
@@ -112,20 +112,22 @@ def printMenu ( ):
     NUM_SEPARATOR = 81
 
     print ('-' * NUM_SEPARATOR)
-    print ('\nJob Flowchart Main Menu')
+    print ('Job Flowchart Main Menu')
     print ('-' * NUM_SEPARATOR)
-    print ('1. Add a new application')
-    print ('2. Update application status')
-    print ('3. Display flowchart')
-    print ('4. Display statistics' )
-    print ('5. Quit')
+    print ('1. Create a new application')
+    print ('2. Read a saved application')
+    print ('3. Update an application')
+    print ('4. Delete an application' )
+    print ('5. Display sankey diagram')
+    print ('6. Display statistics')
+    print ('7. Quit')
     print ('-' * NUM_SEPARATOR)
 
 #*******************************************************************************
 
 def getChoice ( ):
     MIN_CHOICE = 1
-    MAX_CHOICE = 5
+    MAX_CHOICE = 7
     choice = -1
 
     while ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
@@ -134,7 +136,7 @@ def getChoice ( ):
 
             if ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
                 print(f'Error: enter a valid menu option from ({MIN_CHOICE}-{MAX_CHOICE})' )
-        except ValueError as error:
+        except ValueError or EOFError as error:
             print(f'Error: Please enter a positive value in range ({MIN_CHOICE}-{MAX_CHOICE})', error )
     
     return choice
@@ -142,22 +144,77 @@ def getChoice ( ):
 #*******************************************************************************
 
 def processChoice ( choice, applicationDict ):
-    ADD_JOB = 1
-    UPDATE_JOB = 2
-    OPEN_CHART = 3
-    PRINT_JOBS = 4
+    CREATE_APP = 1
+    READ_APP = 2
+    UPDATE_APP = 3
+    DELETE_APP = 4
+    DISPLAY_SANKEY = 5
+    DISPLAY_STATS = 6
+    QUIT = 7
 
-    if choice == ADD_JOB:
+    if choice == CREATE_APP:
         addApplication ( applicationDict )
-    elif choice == UPDATE_JOB:
+    elif choice == READ_APP:
+        readApplication ( applicationDict )
+    elif choice == UPDATE_APP:
         updateApplication ( applicationDict )
-    elif choice == OPEN_CHART:
+    elif choice == DELETE_APP:
+        deleteApplication ( applicationDict )
+    elif choice == DISPLAY_SANKEY:
         display ( applicationDict )
-    elif choice == PRINT_JOBS:
+    elif choice == DISPLAY_STATS:
         getStatistics ( applicationDict )
     else:
         print ( '\nExiting the program. Goodbye' )
         sys.exit ( )
+
+#*******************************************************************************
+
+def readApplication ( applicationDict ):
+    companyName = input ('Enter company name to search: ' )
+
+    if companyName in applicationDict.keys ( ):
+        for application in applicationDict[companyName]:
+            print ( f'{application}\n')
+
+        try:
+            selectedID = int ( input ( '\nEnter a Job ID to display: '))
+
+            for application in applicationDict[companyName]:
+                if selectedID == application.getJobID ( ):
+                    print ( application )
+
+        except ValueError as error:
+            print (f'Error: Invalid job ID input detected.', error )
+
+#*******************************************************************************
+
+def deleteApplication ( applicationDict ):
+    outFile = None
+    companyName = input ('Enter company name to search: ' )
+
+    if companyName in applicationDict.keys ( ):
+        for application in applicationDict[companyName]:
+            print ( application )
+
+        try:
+            selectedID = int ( input ( 'Enter a Job ID to delete: '))
+
+            for application in applicationDict[companyName]:
+                if selectedID == application.getJobID ( ):
+                    applicationDict[companyName].remove(application)
+
+            outFile = open ('jobChartData.pickle', 'wb' )
+            pickle.dump ( applicationDict, outFile )
+            print (f'Successfully deleted Application with ID #{selectedID} at {companyName}.')
+        except ValueError as error:
+            print ('Error: Invalid job ID input detected.', error )
+        except OSError as error:
+            print ('Error: failed to update data file', error )
+        finally:
+            outFile.close ( )
+    else:
+        print (f'Error: {companyName} not found.')
 
 #*******************************************************************************
 
