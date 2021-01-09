@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    8 January 2021
+#    9 January 2021
 #*******************************************************************************
 
 import sys
@@ -111,7 +111,7 @@ def loadDict ( ):
 def printMenu ( ):
     NUM_SEPARATOR = 81
 
-    print ('-' * NUM_SEPARATOR)
+    print ('\n', '-' * NUM_SEPARATOR)
     print ('Job Flowchart Main Menu')
     print ('-' * NUM_SEPARATOR)
     print ('1. Create a new application')
@@ -332,7 +332,7 @@ def display ( applicationDict ):
                               title='Sankey Diagram - Employment Search 2021')
 
     myChart = Sankey(ax=subPlot, scale = 0.1, offset=0.25,head_angle=180,
-                     format='%.0f', unit=' Job applications')
+                     format='%.0f', gap = 0.6, radius = 0.3, shoulder = .05, margin = 0.5, unit=' Job applications')
 
     myChart.add(flows= statisticsList, labels=['Rejected', 'No Response','Total: '],
                 orientations=[0,0,0], pathlengths=[0.5, 0.5, 0.5],
