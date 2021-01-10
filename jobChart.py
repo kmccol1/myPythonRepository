@@ -2,7 +2,7 @@
 #    Kyle McColgan
 #    jobChart.py - Python 3.9.1
 #    This program visualizes my job applications in a sankey flowchart.
-#    9 January 2021
+#    10 January 2021
 #*******************************************************************************
 
 import sys
@@ -14,7 +14,7 @@ from matplotlib.sankey import Sankey
 #*******************************************************************************
 
 def main ( ):
-    QUIT = 5
+    QUIT = 7
     choice = -1
     applicationDict = { }
 
@@ -135,7 +135,7 @@ def getChoice ( ):
             choice = int ( input ('\nEnter menu choice: ' ))
 
             if ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
-                print(f'Error: enter a valid menu option from ({MIN_CHOICE}-{MAX_CHOICE})' )
+                print(f'Error: enter a valid menu option in range ({MIN_CHOICE}-{MAX_CHOICE})' )
         except ValueError or EOFError as error:
             print(f'Error: Please enter a positive value in range ({MIN_CHOICE}-{MAX_CHOICE})', error )
     
@@ -171,11 +171,15 @@ def processChoice ( choice, applicationDict ):
 #*******************************************************************************
 
 def readApplication ( applicationDict ):
+    NUM_SEPARATOR = 81
     companyName = input ('Enter company name to search: ' )
 
     if companyName in applicationDict.keys ( ):
+        print (f'You have {len(applicationDict[companyName])} job applications to {companyName}.')
+        print ('-' * NUM_SEPARATOR )
         for application in applicationDict[companyName]:
-            print ( f'{application}\n')
+            print ( f'{application.getJobID ( )} - {application.getTitle()}\n')
+        print ('-' * NUM_SEPARATOR)
 
         try:
             selectedID = int ( input ( '\nEnter a Job ID to display: '))
@@ -186,6 +190,8 @@ def readApplication ( applicationDict ):
 
         except ValueError as error:
             print (f'Error: Invalid job ID input detected.', error )
+    else:
+        print (f'No saved application data found for {companyName}.')
 
 #*******************************************************************************
 
