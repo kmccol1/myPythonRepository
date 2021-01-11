@@ -366,19 +366,18 @@ def getStatistics ( applicationDict ):
     totalApplications = 0
     size = len(applicationDict)
 
-    print ('\n***Employment application statistics***')
-    print ('-' * NUM_SEPARATOR)
-    print('Formatting example: Company name - Number of applications')
-    print ('-' * NUM_SEPARATOR)
+    print ('\n***Employment application statistics***', '-' * NUM_SEPARATOR,
+           'Formatting example: Company name - Number of applications',
+           '-' * NUM_SEPARATOR, sep='\n')
 
     if size > MIN_SIZE:
         for company, applicationList in applicationDict.items ( ):
             totalApplications += len(applicationList)
             print (f'{company} - {len(applicationList)} job applications')
 
-        print ('-' * NUM_SEPARATOR)
-        print (f'You have {totalApplications} total job applications to', 
-               f'{size} different companies.')
+        print ('-' * NUM_SEPARATOR + '\n', 
+              f'You have {totalApplications} total job applications to', 
+              f'{size} different companies.')
     else:
         print ('\nThere are no current job applications to display.')
 
