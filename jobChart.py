@@ -1,8 +1,11 @@
 #*******************************************************************************
-#    Kyle McColgan
-#    jobChart.py - Python 3.9.1
-#    This program visualizes my job applications in a sankey flowchart.
-#    10 January 2021
+#    Name: Kyle McColgan
+#    Date: 11 January 2021
+#    File name: jobChart.py - Python 3.9.1
+#
+#    Description: Command-line application that tracks and visualizes 
+#                 my job applications in a sankey flowchart.
+#
 #*******************************************************************************
 
 import sys
@@ -111,17 +114,11 @@ def loadDict ( ):
 def printMenu ( ):
     NUM_SEPARATOR = 81
 
-    print ('\n', '-' * NUM_SEPARATOR)
-    print ('Job Flowchart Main Menu')
-    print ('-' * NUM_SEPARATOR)
-    print ('1. Create a new application')
-    print ('2. Read a saved application')
-    print ('3. Update an application')
-    print ('4. Delete an application' )
-    print ('5. Display sankey diagram')
-    print ('6. Display statistics')
-    print ('7. Quit')
-    print ('-' * NUM_SEPARATOR)
+    print ('-' * NUM_SEPARATOR, 'Job Flowchart Main Menu', '-' * NUM_SEPARATOR,
+           '1. Create a new application', '2. Read an existing application',
+           '3. Update an application','4. Delete an existing application',
+           '5. Display sankey diagram', '6. Display statistics', '7. Quit',
+           '-' * NUM_SEPARATOR , sep='\n')
 
 #*******************************************************************************
 
@@ -135,9 +132,12 @@ def getChoice ( ):
             choice = int ( input ('\nEnter menu choice: ' ))
 
             if ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
-                print(f'Error: enter a valid menu option in range ({MIN_CHOICE}-{MAX_CHOICE})' )
+                print('Error: entered value not in range:', 
+                     f'({MIN_CHOICE}-{MAX_CHOICE})')
+
         except ValueError or EOFError as error:
-            print(f'Error: Please enter a positive value in range ({MIN_CHOICE}-{MAX_CHOICE})', error )
+            print('Error: Please enter a positive value in range:',
+                 f'({MIN_CHOICE}-{MAX_CHOICE})', error )
     
     return choice
 
@@ -175,10 +175,13 @@ def readApplication ( applicationDict ):
     companyName = input ('Enter company name to search: ' )
 
     if companyName in applicationDict.keys ( ):
-        print (f'You have {len(applicationDict[companyName])} job applications to {companyName}.')
+        print (f'You have {len(applicationDict[companyName])}',
+              f'job applications to {companyName}.')
         print ('-' * NUM_SEPARATOR )
+
         for application in applicationDict[companyName]:
-            print ( f'{application.getJobID ( )} - {application.getTitle()}\n')
+            print ( f'{application.getJobID ( )} - {application.getTitle()}')
+
         print ('-' * NUM_SEPARATOR)
 
         try:
@@ -212,7 +215,8 @@ def deleteApplication ( applicationDict ):
 
             outFile = open ('jobChartData.pickle', 'wb' )
             pickle.dump ( applicationDict, outFile )
-            print (f'Successfully deleted Application with ID #{selectedID} at {companyName}.')
+            print ('Successfully deleted Application with ID #', 
+                  f'{selectedID} at {companyName}.')
         except ValueError as error:
             print ('Error: Invalid job ID input detected.', error )
         except OSError as error:
@@ -303,7 +307,7 @@ def updateApplication ( applicationDict ):
         except OSError as error:
             print ('Error occured while writing to file.' , error )
         except ( ValueError or TypeError ) as error:
-            print ('Error: please enter a valid job ID number value from above.' , error )
+            print ('Error: please enter a valid job ID selection.' , error )
         finally:
             outFile.close ( )
 
@@ -338,9 +342,11 @@ def display ( applicationDict ):
                               title='Sankey Diagram - Employment Search 2021')
 
     myChart = Sankey(ax=subPlot, scale = 0.1, offset=0.25,head_angle=180,
-                     format='%.0f', gap = 0.6, radius = 0.3, shoulder = .05, margin = 0.5, unit=' Job applications')
+                     format='%.0f', gap = 0.6, radius = 0.3, shoulder = .05,
+                     margin = 0.5, unit=' Job applications')
 
-    myChart.add(flows= statisticsList, labels=['Rejected', 'No Response','Total: '],
+    myChart.add(flows= statisticsList, 
+                labels=['Rejected', 'No Response','Total: '],
                 orientations=[0,0,0], pathlengths=[0.5, 0.5, 0.5],
                 facecolor = 'r')
 
@@ -371,7 +377,8 @@ def getStatistics ( applicationDict ):
             print (f'{company} - {len(applicationList)} job applications')
 
         print ('-' * NUM_SEPARATOR)
-        print (f'You have {totalApplications} total job applications to {size} different companies.')
+        print (f'You have {totalApplications} total job applications to', 
+               f'{size} different companies.')
     else:
         print ('\nThere are no current job applications to display.')
 
