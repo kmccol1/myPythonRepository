@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 11 January 2021
+#    Date: 12 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -80,12 +80,12 @@ class Application:
 
     def __str__ ( self ):
         REJECT_STATUS = -1
-        GHOST_STATUS = 0
+        DEFAULT_STATUS = 0
 
         result = f'Company Name: {self.getCompanyName()} \
-                  \nRole: {self.getTitle()}\nJob ID: {self.getJobID( )}'
+                   \nRole: {self.getTitle()}\nJob ID: {self.getJobID()}'
         
-        if self.getJobStatus() == GHOST_STATUS:
+        if self.getJobStatus() == DEFAULT_STATUS:
             result += '\nStatus: No response.'
         elif self.getJobStatus() == REJECT_STATUS:
             result += '\nStatus: Application rejected.'
@@ -252,6 +252,7 @@ def addApplication ( applicationDict ):
 #*******************************************************************************
 
 def updateApplication ( applicationDict ):
+    NUM_SEPARATOR = 81
     MIN_ID = 0
     MAX_ID = 9999
     MIN_STATUS = -1
@@ -262,12 +263,25 @@ def updateApplication ( applicationDict ):
     outFile = None
     validJobID = []
 
-    companyName = input('Enter company to update an application: ')
+    print ('-' * NUM_SEPARATOR )
 
+    for company in applicationDict.keys ( ):
+        print ( company )
+    
+    print ('-' * NUM_SEPARATOR )
+
+    companyName = input('Enter a company name from above list \
+                         \nto update an application: ')
+
+    while companyName not in applicationDict.keys ( ):
+        print (f'{companyName} has no existing applications. \
+                \nPlease try again.' )
+        companyName = input('Enter company to update an application: ')
+        
     if companyName in applicationDict:
         for app in applicationDict[companyName]:
             validJobID.append ( app.getJobID ( ) )
-            print ( str(app))
+            print ( app )
 
     while ( selectedID < MIN_ID ) or ( selectedID > MAX_ID ):
         try:
