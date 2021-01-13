@@ -81,6 +81,7 @@ class Application:
     def __str__ ( self ):
         REJECT_STATUS = -1
         DEFAULT_STATUS = 0
+        INTERVIEW_STATUS = 1
 
         result = f'Company Name: {self.getCompanyName()} \
                    \nRole: {self.getTitle()}\nJob ID: {self.getJobID()}'
@@ -89,6 +90,8 @@ class Application:
             result += '\nStatus: No response.'
         elif self.getJobStatus() == REJECT_STATUS:
             result += '\nStatus: Application rejected.'
+        elif self.getJobStatus ( ) == INTERVIEW_STATUS:
+            result += '\nStatus: Interviewing'
 
         return result
 
@@ -329,10 +332,12 @@ def updateApplication ( applicationDict ):
 
 def display ( applicationDict ):
     REJECT_STATUS = -1
-    GHOST_STATUS = 0
+    DEFAULT_STATUS = 0
+    INTERVIEW_STATUS = 1
 
     numReject = 0
     numGhost = 0
+    numInterviews = 0
     totalNumApplications = 0
     statisticsList = []
 
@@ -340,13 +345,17 @@ def display ( applicationDict ):
         for position in applicationList:
             if position.getJobStatus() == REJECT_STATUS:
                 numReject += 1
-            elif position.getJobStatus() == GHOST_STATUS:
+            elif position.getJobStatus() == DEFAULT_STATUS:
                 numGhost += 1
+            elif position.getJobStatus ( ) == INTERVIEW_STATUS:
+                numInterviews += 1
+
 
     totalNumApplications = numReject + numGhost
 
     statisticsList.append(-numReject)
     statisticsList.append(-numGhost)
+    statisticsList.append (-numInterviews )
     statisticsList.append(totalNumApplications)
             
     print ('Opening flowchart display' )
@@ -360,9 +369,9 @@ def display ( applicationDict ):
                      margin = 0.5, unit=' Job applications')
 
     myChart.add(flows= statisticsList, 
-                labels=['Rejected', 'No Response','Total: '],
-                orientations=[0,0,0], pathlengths=[0.5, 0.5, 0.5],
-                facecolor = 'r')
+                labels=['Rejected', 'No Response', 'Interviewed', 'Total: '],
+                orientations=[0,0,0,0], pathlengths=[0.5,0.5,0.5,0.5],
+                trunklength=3.0, facecolor = 'r')
 
     diagrams = myChart.finish()
     diagrams[0].texts[-1].set_color('b')
