@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 12 January 2021
+#    Date: 15 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -106,7 +106,7 @@ def loadDict ( ):
     except OSError as error:
         print ('Error: failed to read from file', error )
     except EOFError as error:
-        print ('No previous file found, creating a new file.', error)
+        print ('No saved data found, creating a new save file.', error)
     finally:
         inFile.close()
 
@@ -178,8 +178,8 @@ def readApplication ( applicationDict ):
     companyName = input ('Enter company name to search: ' )
 
     if companyName in applicationDict.keys ( ):
-        print (f'You have {len(applicationDict[companyName])}',
-              f'job applications to {companyName}.')
+        print (f'There are {len(applicationDict[companyName])}',
+               f'recorded job applications to {companyName}.')
         print ('-' * NUM_SEPARATOR )
 
         for application in applicationDict[companyName]:
@@ -267,10 +267,8 @@ def updateApplication ( applicationDict ):
     validJobID = []
 
     print ('-' * NUM_SEPARATOR )
-
     for company in applicationDict.keys ( ):
         print ( company )
-    
     print ('-' * NUM_SEPARATOR )
 
     companyName = input('Enter a company name from above list \
@@ -291,42 +289,48 @@ def updateApplication ( applicationDict ):
             selectedID = int(input('Choose a job ID to update: ' ))
 
             if ( selectedID < MIN_ID ) or ( selectedID > MAX_ID ):
-                print ('Error: please input a valid Job ID to update. Please try again.' )
-            else:
-                outFile = open('jobChartData.pickle', 'wb' )
-
-                for position in applicationDict[companyName]:
-                    if position.getJobID() == selectedID:
-                        jobID = random.randrange(MIN_ID, MAX_ID)
-                        companyName = input ('Enter new company name: ' )
-                        jobTitle = input('Enter new job title: ' )
-                        
-                        while ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
-                            try:
-                                status = int ( input ('Enter current application status: \
-                                                      \n[-1 == Rejection, 0 == No response, 1 == Interview]: ' ))
-
-                                if ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
-                                    print(f'Error: Enter a valid status in range ({MIN_STATUS}-{MAX_STATUS})' )
-                            except ValueError as error:
-                                print(f'Error: Enter a valid status from ({MIN_STATUS}-{MAX_STATUS})', error )
-
-                        if ( companyName in applicationDict ) and ( position in applicationDict[companyName] ):
-                            applicationDict[companyName].remove(position)
-
-                        if companyName not in applicationDict.keys():
-                            applicationDict [companyName] = [Application(jobID,jobTitle,companyName, status)]
-                        else:
-                            applicationDict[companyName].append((Application(jobID,jobTitle,companyName, status)))
-
-                        pickle.dump ( applicationDict, outFile )
-
-        except OSError as error:
-            print ('Error occured while writing to file.' , error )
+                print ('Error: must input a valid Job ID from above.')
         except ( ValueError or TypeError ) as error:
             print ('Error: please enter a valid job ID selection.' , error )
-        finally:
-            outFile.close ( )
+    
+    try:
+        outFile = open('jobChartData.pickle', 'wb' )
+
+        for position in applicationDict[companyName]:
+            if position.getJobID() == selectedID:
+                jobID = random.randrange(MIN_ID, MAX_ID)
+                companyName = input ('Enter new company name: ' )
+                jobTitle = input('Enter new job title: ' )
+                            
+                while ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
+                    try:
+                        status = int ( input ('-1 - Rejected\n \
+                                              0 - No response\n \
+                                              1 - Interviewing\n \
+                                              Enter job status: '))
+
+                        if ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
+                            print('Error: Enter a valid status in range:',
+                                 f'({MIN_STATUS}-{MAX_STATUS})' )
+
+                    except ( ValueError or TypeError ) as error:
+                        print('Error: Enter a valid status from:', 
+                             f'({MIN_STATUS}-{MAX_STATUS})', error )
+
+            if position in applicationDict[companyName]:
+                applicationDict[companyName].remove(position)
+
+        if companyName not in applicationDict.keys():
+            applicationDict [companyName] = [Application(jobID,jobTitle,companyName, status)]
+        else:
+            applicationDict[companyName].append((Application(jobID,jobTitle,companyName, status)))
+
+        pickle.dump ( applicationDict, outFile )
+
+    except OSError as error:
+        print ('Error occured while writing to file.' , error )
+    finally:
+        outFile.close ( )
 
 #*******************************************************************************
 
@@ -349,9 +353,8 @@ def display ( applicationDict ):
                 numGhost += 1
             elif position.getJobStatus ( ) == INTERVIEW_STATUS:
                 numInterviews += 1
-
-
-    totalNumApplications = numReject + numGhost
+            
+    totalNumApplications = numReject + numGhost + numInterviews
 
     statisticsList.append(-numReject)
     statisticsList.append(-numGhost)
