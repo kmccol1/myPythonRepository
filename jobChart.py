@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 15 January 2021
+#    Date: 16 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -317,13 +317,16 @@ def updateApplication ( applicationDict ):
                         print('Error: Enter a valid status from:', 
                              f'({MIN_STATUS}-{MAX_STATUS})', error )
 
-            if position in applicationDict[companyName]:
+            if companyName in applicationDict.keys() and \
+                position in applicationDict[companyName]:
                 applicationDict[companyName].remove(position)
 
         if companyName not in applicationDict.keys():
-            applicationDict [companyName] = [Application(jobID,jobTitle,companyName, status)]
+            applicationDict [companyName] = \
+                            [Application(jobID,jobTitle,companyName, status)]
         else:
-            applicationDict[companyName].append((Application(jobID,jobTitle,companyName, status)))
+            applicationDict[companyName].append( \
+                           (Application(jobID,jobTitle,companyName, status)))
 
         pickle.dump ( applicationDict, outFile )
 
