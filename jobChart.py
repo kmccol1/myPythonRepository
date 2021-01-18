@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 16 January 2021
+#    Date: 15 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -240,9 +240,11 @@ def addApplication ( applicationDict ):
     companyName = input ('Enter company: ' )
 
     if companyName not in applicationDict.keys():
-        applicationDict [companyName] = [Application(jobID,jobTitle,companyName)]
+        applicationDict [companyName] = \
+                        [Application(jobID,jobTitle,companyName)]
     else:
-        (applicationDict[companyName]).append((Application(jobID,jobTitle,companyName)))
+        (applicationDict[companyName]).append( \
+                        (Application(jobID,jobTitle,companyName)))
 
     try:
         outFile = open ('jobChartData.pickle', 'wb' )
@@ -304,10 +306,10 @@ def updateApplication ( applicationDict ):
                             
                 while ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
                     try:
-                        status = int ( input ('-1 - Rejected\n \
-                                              0 - No response\n \
-                                              1 - Interviewing\n \
-                                              Enter job status: '))
+                        status = int ( input ('\n-1 - Rejected \
+                                              \n0 - No response \
+                                              \n1 - Interviewing \
+                                              \nEnter job status: '))
 
                         if ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
                             print('Error: Enter a valid status in range:',
