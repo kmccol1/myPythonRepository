@@ -210,20 +210,22 @@ def deleteApplication ( applicationDict ):
             print ( application )
 
         try:
+            outFile = open ('jobChartData.pickle', 'wb' )
             selectedID = int ( input ( 'Enter a Job ID to delete: '))
 
             for application in applicationDict[companyName]:
                 if selectedID == application.getJobID ( ):
                     applicationDict[companyName].remove(application)
 
-            outFile = open ('jobChartData.pickle', 'wb' )
             pickle.dump ( applicationDict, outFile )
+
             print ('Successfully deleted Application with ID #', 
                   f'{selectedID} at {companyName}.')
+
         except ValueError as error:
-            print ('Error: Invalid job ID input detected.', error )
+            print ('Error: Invalid job ID input -', error )
         except OSError as error:
-            print ('Error: failed to update data file', error )
+            print ('Error: failed to update data file -', error )
         finally:
             outFile.close ( )
     else:
