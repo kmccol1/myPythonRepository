@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 18 January 2021
+#    Date: 15 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -180,11 +180,10 @@ def readApplication ( applicationDict ):
     if companyName in applicationDict.keys ( ):
         print (f'There are {len(applicationDict[companyName])}',
                f'recorded job applications to {companyName}.')
-        print ('-' * NUM_SEPARATOR )
 
+        print ('-' * NUM_SEPARATOR )
         for application in applicationDict[companyName]:
             print ( f'{application.getJobID ( )} - {application.getTitle()}')
-
         print ('-' * NUM_SEPARATOR)
 
         try:
