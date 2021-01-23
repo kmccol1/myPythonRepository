@@ -1,11 +1,11 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 20 January 2021
+#    Date: 23 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
 #                 my job applications in a sankey flowchart.
-
+#
 #*******************************************************************************
 
 import sys
@@ -17,15 +17,17 @@ from matplotlib.sankey import Sankey
 #*******************************************************************************
 
 def main ( ):
-    QUIT = 7
+    MIN_MENU_CHOICE = 1
+    MAX_MENU_CHOICE = 7
+
     choice = -1
     applicationDict = { }
 
     applicationDict = loadDict ( )
 
-    while choice != QUIT:
+    while choice != MAX_MENU_CHOICE:
         printMenu ( )
-        choice = getChoice ( )
+        choice = getValidInteger ( MIN_MENU_CHOICE, MAX_MENU_CHOICE, 'Enter menu choice: ' )
         processChoice ( choice, applicationDict )
 
 #*******************************************************************************
@@ -125,22 +127,20 @@ def printMenu ( ):
 
 #*******************************************************************************
 
-def getChoice ( ):
-    MIN_CHOICE = 1
-    MAX_CHOICE = 7
+def getValidInteger ( minValue, maxValue, prompt ):
     choice = -1
 
-    while ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
+    while ( choice < minValue ) or ( choice > maxValue ):
         try:
-            choice = int ( input ('\nEnter menu choice: ' ))
+            choice = int ( input (prompt ))
 
-            if ( choice < MIN_CHOICE ) or ( choice > MAX_CHOICE ):
+            if ( choice < minValue ) or ( choice > maxValue ):
                 print('Error: entered value not in range:', 
-                     f'({MIN_CHOICE}-{MAX_CHOICE})')
+                     f'({minValue}-{maxValue})')
 
         except ValueError or EOFError as error:
             print('Error: Please enter a positive value in range:',
-                 f'({MIN_CHOICE}-{MAX_CHOICE})', error )
+                 f'({minValue}-{maxValue})', error )
     
     return choice
 
@@ -174,7 +174,10 @@ def processChoice ( choice, applicationDict ):
 #*******************************************************************************
 
 def readApplication ( applicationDict ):
+    MIN_ID = 0
+    MAX_ID = 9999
     NUM_SEPARATOR = 81
+
     companyName = input ('Enter company name to search: ' )
 
     if companyName in applicationDict.keys ( ):
@@ -187,7 +190,7 @@ def readApplication ( applicationDict ):
         print ('-' * NUM_SEPARATOR)
 
         try:
-            selectedID = int ( input ( '\nEnter a Job ID to display: '))
+            selectedID = getValidInteger(MIN_ID, MAX_ID, '\nEnter a Job ID to display: ')
 
             for application in applicationDict[companyName]:
                 if selectedID == application.getJobID ( ):
@@ -201,7 +204,11 @@ def readApplication ( applicationDict ):
 #*******************************************************************************
 
 def deleteApplication ( applicationDict ):
+    MIN_ID = 0
+    MAX_ID = 9999
+
     outFile = None
+
     companyName = input ('Enter company name to search: ' )
 
     if companyName in applicationDict.keys ( ):
@@ -210,7 +217,7 @@ def deleteApplication ( applicationDict ):
 
         try:
             outFile = open ('jobChartData.pickle', 'wb' )
-            selectedID = int ( input ( 'Enter a Job ID to delete: '))
+            selectedID = getValidInteger(MIN_ID, MAX_ID, 'Enter a Job ID to delete: ')
 
             for application in applicationDict[companyName]:
                 if selectedID == application.getJobID ( ):
