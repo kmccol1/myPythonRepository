@@ -5,7 +5,7 @@
 #
 #    Description: Command-line application that tracks and visualizes 
 #                 my job applications in a sankey flowchart.
-#
+
 #*******************************************************************************
 
 import sys
