@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 23 January 2021
+#    Date: 24 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -27,7 +27,8 @@ def main ( ):
 
     while choice != MAX_MENU_CHOICE:
         printMenu ( )
-        choice = getValidInteger ( MIN_MENU_CHOICE, MAX_MENU_CHOICE, 'Enter menu choice: ' )
+        choice = getValidInteger ( MIN_MENU_CHOICE, MAX_MENU_CHOICE,
+                                  'Enter menu choice: ' )
         processChoice ( choice, applicationDict )
 
 #*******************************************************************************
@@ -190,7 +191,8 @@ def readApplication ( applicationDict ):
         print ('-' * NUM_SEPARATOR)
 
         try:
-            selectedID = getValidInteger(MIN_ID, MAX_ID, '\nEnter a Job ID to display: ')
+            selectedID = getValidInteger(MIN_ID, MAX_ID,
+                                        '\nEnter a Job ID to display: ')
 
             for application in applicationDict[companyName]:
                 if selectedID == application.getJobID ( ):
@@ -217,7 +219,8 @@ def deleteApplication ( applicationDict ):
 
         try:
             outFile = open ('jobChartData.pickle', 'wb' )
-            selectedID = getValidInteger(MIN_ID, MAX_ID, 'Enter a Job ID to delete: ')
+            selectedID = getValidInteger(MIN_ID, MAX_ID,
+                                        'Enter a Job ID to delete: ')
 
             for application in applicationDict[companyName]:
                 if selectedID == application.getJobID ( ):
