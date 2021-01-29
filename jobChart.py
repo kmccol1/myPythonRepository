@@ -1,10 +1,10 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 24 January 2021
+#    Date: 29 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
-#    Description: Command-line application that tracks and visualizes 
-#                 my job applications in a sankey flowchart.
+#    Description: Command-line application to store and visualize 
+#                 job applications in a Sankey diagram flowchart.
 #
 #*******************************************************************************
 
@@ -104,7 +104,7 @@ def loadDict ( ):
     applicationDict = {}
 
     try:
-        inFile = open('jobChartData.pickle', 'rb')
+        inFile = open('jobChartData.pickle', 'rb+')
         applicationDict = pickle.load(inFile)
     except OSError as error:
         print ('Error: failed to read from file', error )
@@ -311,7 +311,7 @@ def updateApplication ( applicationDict ):
 
         for position in applicationDict[companyName]:
             if position.getJobID() == selectedID:
-                jobID = random.randrange(MIN_ID, MAX_ID)
+                #jobID = random.randrange(MIN_ID, MAX_ID)
                 companyName = input ('Enter new company name: ' )
                 jobTitle = input('Enter new job title: ' )
                             
@@ -333,7 +333,8 @@ def updateApplication ( applicationDict ):
             if companyName in applicationDict.keys() and \
                 position in applicationDict[companyName]:
                 applicationDict[companyName].remove(position)
-
+        
+        jobID = random.randrange(MIN_ID, MAX_ID)
         if companyName not in applicationDict.keys():
             applicationDict [companyName] = \
                             [Application(jobID,jobTitle,companyName, status)]
