@@ -1,10 +1,10 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 29 January 2021
+#    Date: 30 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
-#    Description: Command-line application to store and visualize 
-#                 job applications in a Sankey diagram flowchart.
+#    Description: Command-line application that tracks and visualizes 
+#                 my job applications in a sankey flowchart.
 #
 #*******************************************************************************
 
@@ -139,7 +139,7 @@ def getValidInteger ( minValue, maxValue, prompt ):
                 print('Error: entered value not in range:', 
                      f'({minValue}-{maxValue})')
 
-        except ValueError or EOFError as error:
+        except ( ValueError or EOFError or TypeError ) as error:
             print('Error: Please enter a positive value in range:',
                  f'({minValue}-{maxValue})', error )
     
@@ -218,13 +218,16 @@ def deleteApplication ( applicationDict ):
             print ( application )
 
         try:
-            outFile = open ('jobChartData.pickle', 'wb' )
+            outFile = open ('jobChartData.pickle', 'wb+' )
             selectedID = getValidInteger(MIN_ID, MAX_ID,
                                         'Enter a Job ID to delete: ')
 
             for application in applicationDict[companyName]:
                 if selectedID == application.getJobID ( ):
                     applicationDict[companyName].remove(application)
+            
+            if len(applicationDict[companyName]) == 0:
+                del applicationDict[companyName]
 
             pickle.dump ( applicationDict, outFile )
 
@@ -258,7 +261,7 @@ def addApplication ( applicationDict ):
                         (Application(jobID,jobTitle,companyName)))
 
     try:
-        outFile = open ('jobChartData.pickle', 'wb' )
+        outFile = open ('jobChartData.pickle', 'wb+' )
         pickle.dump(applicationDict, outFile )
     except OSError as error:
         print('Error: error saving to the file.', error )
@@ -297,44 +300,27 @@ def updateApplication ( applicationDict ):
             validJobID.append ( app.getJobID ( ) )
             print ( app )
 
-    while ( selectedID < MIN_ID ) or ( selectedID > MAX_ID ):
-        try:
-            selectedID = int(input('Choose a job ID to update: ' ))
-
-            if ( selectedID < MIN_ID ) or ( selectedID > MAX_ID ):
-                print ('Error: must input a valid Job ID from above.')
-        except ( ValueError or TypeError ) as error:
-            print ('Error: please enter a valid job ID selection.' , error )
+    selectedID = getValidInteger (MIN_ID, MAX_ID, 'Choose a job ID to update: ' )
     
     try:
-        outFile = open('jobChartData.pickle', 'wb' )
+        outFile = open('jobChartData.pickle', 'wb+' )
 
         for position in applicationDict[companyName]:
             if position.getJobID() == selectedID:
-                #jobID = random.randrange(MIN_ID, MAX_ID)
+                jobID = random.randrange(MIN_ID, MAX_ID)
                 companyName = input ('Enter new company name: ' )
                 jobTitle = input('Enter new job title: ' )
-                            
-                while ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
-                    try:
-                        status = int ( input ('\n-1 - Rejected \
+
+                status = getValidInteger ( MIN_STATUS, MAX_STATUS, 
+                                           '''\n-1 - Rejected \
                                               \n0 - No response \
                                               \n1 - Interviewing \
-                                              \nEnter job status: '))
-
-                        if ( status < MIN_STATUS ) or ( status > MAX_STATUS ):
-                            print('Error: Enter a valid status in range:',
-                                 f'({MIN_STATUS}-{MAX_STATUS})' )
-
-                    except ( ValueError or TypeError ) as error:
-                        print('Error: Enter a valid status from:', 
-                             f'({MIN_STATUS}-{MAX_STATUS})', error )
+                                              \nEnter job status: ''' )
 
             if companyName in applicationDict.keys() and \
                 position in applicationDict[companyName]:
                 applicationDict[companyName].remove(position)
         
-        jobID = random.randrange(MIN_ID, MAX_ID)
         if companyName not in applicationDict.keys():
             applicationDict [companyName] = \
                             [Application(jobID,jobTitle,companyName, status)]
@@ -345,7 +331,7 @@ def updateApplication ( applicationDict ):
         pickle.dump ( applicationDict, outFile )
 
     except OSError as error:
-        print ('Error occured while writing to file.' , error )
+        print ('Error occured while writing to file:' , error )
     finally:
         outFile.close ( )
 
