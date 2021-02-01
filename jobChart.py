@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 24 January 2021
+#    Date: 1 February 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
