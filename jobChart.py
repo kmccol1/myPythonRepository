@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 30 January 2021
+#    Date: 24 January 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -154,7 +154,6 @@ def processChoice ( choice, applicationDict ):
     DELETE_APP = 4
     DISPLAY_SANKEY = 5
     DISPLAY_STATS = 6
-    QUIT = 7
 
     if choice == CREATE_APP:
         addApplication ( applicationDict )
