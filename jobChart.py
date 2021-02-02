@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 1 February 2021
+#    Date: 2 February 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -317,7 +317,8 @@ def updateApplication ( applicationDict ):
                                               \nEnter job status: ''' )
 
             if companyName in applicationDict.keys() and \
-                position in applicationDict[companyName]:
+                position in applicationDict[companyName] and \
+                position.getJobID() == selectedID:
                 applicationDict[companyName].remove(position)
         
         if companyName not in applicationDict.keys():
