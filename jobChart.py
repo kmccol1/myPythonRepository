@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 2 February 2021
+#    Date: 3 February 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -279,7 +279,6 @@ def updateApplication ( applicationDict ):
     status = -2
     selectedID = -1
     outFile = None
-    validJobID = []
 
     print ('-' * NUM_SEPARATOR )
     for company in applicationDict.keys ( ):
@@ -295,9 +294,12 @@ def updateApplication ( applicationDict ):
         companyName = input('Enter company to update an application: ')
         
     if companyName in applicationDict:
-        for app in applicationDict[companyName]:
-            validJobID.append ( app.getJobID ( ) )
-            print ( app )
+        print ('-' * NUM_SEPARATOR )
+        for application in applicationDict[companyName]:
+            print ( f'{application.getJobID ( )} - {application.getTitle()}')
+        print ('-' * NUM_SEPARATOR)
+    else
+        print('None found.')
 
     selectedID = getValidInteger (MIN_ID, MAX_ID, 'Choose a job ID to update: ' )
     
@@ -377,7 +379,7 @@ def display ( applicationDict ):
     myChart.add(flows= statisticsList, 
                 labels=['Rejected', 'No Response', 'Interviewed', 'Total: '],
                 orientations=[0,0,0,0], pathlengths=[0.5,0.5,0.5,0.5],
-                trunklength=3.0, facecolor = 'r')
+                trunklength=1.1, facecolor = 'r')
 
     diagrams = myChart.finish()
     diagrams[0].texts[-1].set_color('b')
