@@ -298,39 +298,39 @@ def updateApplication ( applicationDict ):
         for application in applicationDict[companyName]:
             print ( f'{application.getJobID ( )} - {application.getTitle()}')
         print ('-' * NUM_SEPARATOR)
-    else
-        print('None found.')
 
-    selectedID = getValidInteger (MIN_ID, MAX_ID, 'Choose a job ID to update: ' )
+        selectedID = getValidInteger (MIN_ID, MAX_ID, 'Choose a job ID to update: ' )
     
-    try:
-        outFile = open('jobChartData.pickle', 'wb+' )
+        try:
+            outFile = open('jobChartData.pickle', 'wb+' )
 
-        for position in applicationDict[companyName]:
-            if position.getJobID() == selectedID:
-                jobID = random.randrange(MIN_ID, MAX_ID)
-                companyName = input ('Enter new company name: ' )
-                jobTitle = input('Enter new job title: ' )
+            for position in applicationDict[companyName]:
+                if position.getJobID() == selectedID:
+                    jobID = random.randrange(MIN_ID, MAX_ID)
+                    companyName = input ('Enter new company name: ' )
+                    jobTitle = input('Enter new job title: ' )
 
-                status = getValidInteger ( MIN_STATUS, MAX_STATUS, 
-                                           '''\n-1 - Rejected \
-                                              \n0 - No response \
-                                              \n1 - Interviewing \
-                                              \nEnter job status: ''' )
+                    status = getValidInteger ( MIN_STATUS, MAX_STATUS, 
+                                            '''\n-1 - Rejected \
+                                                \n0 - No response \
+                                                \n1 - Interviewing \
+                                                \nEnter job status: ''' )
 
-            if companyName in applicationDict.keys() and \
-                position in applicationDict[companyName] and \
-                position.getJobID() == selectedID:
-                applicationDict[companyName].remove(position)
-        
-        if companyName not in applicationDict.keys():
-            applicationDict [companyName] = \
-                            [Application(jobID,jobTitle,companyName, status)]
-        else:
-            applicationDict[companyName].append( \
-                           (Application(jobID,jobTitle,companyName, status)))
+                if companyName in applicationDict.keys() and \
+                    position in applicationDict[companyName] and \
+                    position.getJobID() == selectedID:
+                    applicationDict[companyName].remove(position)
+            
+            if companyName not in applicationDict.keys():
+                applicationDict [companyName] = \
+                                [Application(jobID,jobTitle,companyName, status)]
+            else:
+                applicationDict[companyName].append( \
+                            (Application(jobID,jobTitle,companyName, status)))
 
-        pickle.dump ( applicationDict, outFile )
+            pickle.dump ( applicationDict, outFile )
+    else:
+        print(f'{companyName} has no saved applications.')
 
     except OSError as error:
         print ('Error occured while writing to file:' , error )
