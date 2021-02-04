@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 3 February 2021
+#    Date: 4 February 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -18,16 +18,16 @@ from matplotlib.sankey import Sankey
 
 def main ( ):
     MIN_MENU_CHOICE = 1
-    MAX_MENU_CHOICE = 7
+    MAX_CHOICE_QUIT = 7
 
     choice = -1
     applicationDict = { }
 
     applicationDict = loadDict ( )
 
-    while choice != MAX_MENU_CHOICE:
+    while choice != MAX_CHOICE_QUIT:
         printMenu ( )
-        choice = getValidInteger ( MIN_MENU_CHOICE, MAX_MENU_CHOICE,
+        choice = getValidInteger ( MIN_MENU_CHOICE, MAX_CHOICE_QUIT,
                                   'Enter menu choice: ' )
         processChoice ( choice, applicationDict )
 
@@ -299,39 +299,36 @@ def updateApplication ( applicationDict ):
             print ( f'{application.getJobID ( )} - {application.getTitle()}')
         print ('-' * NUM_SEPARATOR)
 
-        selectedID = getValidInteger (MIN_ID, MAX_ID, 'Choose a job ID to update: ' )
+        selectedID = getValidInteger (MIN_ID, MAX_ID, 
+                                     'Choose a job ID to update: ' )
     
-        try:
-            outFile = open('jobChartData.pickle', 'wb+' )
+        for position in applicationDict[companyName]:
+            if position.getJobID() == selectedID:
+                jobID = random.randrange(MIN_ID, MAX_ID)
+                companyName = input ('Enter new company name: ' )
+                jobTitle = input('Enter new job title: ' )
 
-            for position in applicationDict[companyName]:
-                if position.getJobID() == selectedID:
-                    jobID = random.randrange(MIN_ID, MAX_ID)
-                    companyName = input ('Enter new company name: ' )
-                    jobTitle = input('Enter new job title: ' )
+                status = getValidInteger ( MIN_STATUS, MAX_STATUS, 
+                                        '''\n-1 - Rejected \
+                                            \n0 - No response \
+                                             \n1 - Interviewing \
+                                             \nEnter job status: ''' )
 
-                    status = getValidInteger ( MIN_STATUS, MAX_STATUS, 
-                                            '''\n-1 - Rejected \
-                                                \n0 - No response \
-                                                \n1 - Interviewing \
-                                                \nEnter job status: ''' )
-
-                if companyName in applicationDict.keys() and \
-                    position in applicationDict[companyName] and \
-                    position.getJobID() == selectedID:
-                    applicationDict[companyName].remove(position)
+            if companyName in applicationDict.keys() and \
+                position in applicationDict[companyName] and \
+                position.getJobID() == selectedID:
+                applicationDict[companyName].remove(position)
             
-            if companyName not in applicationDict.keys():
-                applicationDict [companyName] = \
-                                [Application(jobID,jobTitle,companyName, status)]
-            else:
-                applicationDict[companyName].append( \
-                            (Application(jobID,jobTitle,companyName, status)))
+        if companyName not in applicationDict.keys():
+            applicationDict [companyName] = \
+                            [Application(jobID,jobTitle,companyName, status)]
+        else:
+            applicationDict[companyName].append( \
+                        (Application(jobID,jobTitle,companyName, status)))
 
-            pickle.dump ( applicationDict, outFile )
-    else:
-        print(f'{companyName} has no saved applications.')
-
+    try:
+        outFile = open('jobChartData.pickle', 'wb+' )
+        pickle.dump ( applicationDict, outFile )
     except OSError as error:
         print ('Error occured while writing to file:' , error )
     finally:
