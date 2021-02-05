@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 4 February 2021
+#    Date: 5 February 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -288,10 +288,11 @@ def updateApplication ( applicationDict ):
     companyName = input('Enter a company name from above list \
                          \nto update an application: ')
 
-    while companyName not in applicationDict.keys ( ):
+    while companyName not in applicationDict.keys ( ) and companyName != -1:
         print (f'{companyName} has no existing applications. \
                 \nPlease try again.' )
-        companyName = input('Enter company to update an application: ')
+        companyName = input('Enter company to update an \
+                            application ('-1' to quit: ')
         
     if companyName in applicationDict:
         print ('-' * NUM_SEPARATOR )
