@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 5 February 2021
+#    Date: 6 February 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -164,7 +164,7 @@ def processChoice ( choice, applicationDict ):
     elif choice == DELETE_APP:
         deleteApplication ( applicationDict )
     elif choice == DISPLAY_SANKEY:
-        display ( applicationDict )
+        displayGraph ( applicationDict )
     elif choice == DISPLAY_STATS:
         getStatistics ( applicationDict )
     else:
@@ -292,7 +292,7 @@ def updateApplication ( applicationDict ):
         print (f'{companyName} has no existing applications. \
                 \nPlease try again.' )
         companyName = input('Enter company to update an \
-                            application ('-1' to quit: ')
+                            application (\'-1\' to quit: )' )
         
     if companyName in applicationDict:
         print ('-' * NUM_SEPARATOR )
@@ -311,9 +311,9 @@ def updateApplication ( applicationDict ):
 
                 status = getValidInteger ( MIN_STATUS, MAX_STATUS, 
                                         '''\n-1 - Rejected \
-                                            \n0 - No response \
-                                             \n1 - Interviewing \
-                                             \nEnter job status: ''' )
+                                           \n0 - No response \
+                                           \n1 - Interviewing \
+                                           \nEnter job status: ''' )
 
             if companyName in applicationDict.keys() and \
                 position in applicationDict[companyName] and \
@@ -337,7 +337,7 @@ def updateApplication ( applicationDict ):
 
 #*******************************************************************************
 
-def display ( applicationDict ):
+def displayGraph ( applicationDict ):
     REJECT_STATUS = -1
     DEFAULT_STATUS = 0
     INTERVIEW_STATUS = 1
@@ -364,7 +364,7 @@ def display ( applicationDict ):
     statisticsList.append (-numInterviews )
     statisticsList.append(totalNumApplications)
             
-    print ('Opening flowchart display' )
+    print ('\nOpening flowchart display in new window.' )
     fig = plt.figure()
 
     subPlot = fig.add_subplot(1,1,1,xticks=[],yticks=[],
