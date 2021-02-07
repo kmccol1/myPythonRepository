@@ -1,6 +1,6 @@
 #*******************************************************************************
 #    Name: Kyle McColgan
-#    Date: 6 February 2021
+#    Date: 7 February 2021
 #    File name: jobChart.py - Python 3.9.1
 #
 #    Description: Command-line application that tracks and visualizes 
@@ -236,7 +236,7 @@ def deleteApplication ( applicationDict ):
         except ValueError as error:
             print ('Error: Invalid job ID input -', error )
         except OSError as error:
-            print ('Error: failed to update data file -', error )
+            print ('Error: failed writing to data file -', error )
         finally:
             outFile.close ( )
     else:
@@ -263,7 +263,7 @@ def addApplication ( applicationDict ):
         outFile = open ('jobChartData.pickle', 'wb+' )
         pickle.dump(applicationDict, outFile )
     except OSError as error:
-        print('Error: error saving to the file.', error )
+        print('Error: failed to write to data file - ', error )
     finally:
         outFile.close()
 
@@ -331,7 +331,7 @@ def updateApplication ( applicationDict ):
         outFile = open('jobChartData.pickle', 'wb+' )
         pickle.dump ( applicationDict, outFile )
     except OSError as error:
-        print ('Error occured while writing to file:' , error )
+        print ('Error occured while writing to data file:' , error )
     finally:
         outFile.close ( )
 
@@ -364,7 +364,7 @@ def displayGraph ( applicationDict ):
     statisticsList.append (-numInterviews )
     statisticsList.append(totalNumApplications)
             
-    print ('\nOpening flowchart display in new window.' )
+    print ('\nOpening flowchart display in a new window.' )
     fig = plt.figure()
 
     subPlot = fig.add_subplot(1,1,1,xticks=[],yticks=[],
