@@ -147,6 +147,22 @@ def getValidInteger ( minValue, maxValue, prompt ):
 
 #*******************************************************************************
 
+def printAppList ( applicationDict, companyName ):
+    NUM_SEPARATOR = 81
+
+    print ('-' * NUM_SEPARATOR )
+
+    if companyName != None:
+        for application in applicationDict[companyName]:
+            print ( f'{application.getJobID ( )} - {application.getTitle()}')
+    else:
+        for company in applicationDict.keys ( ):
+            print ( company )
+
+    print ('-' * NUM_SEPARATOR)
+
+#*******************************************************************************
+
 def processChoice ( choice, applicationDict ):
     CREATE_APP = 1
     READ_APP = 2
@@ -176,7 +192,6 @@ def processChoice ( choice, applicationDict ):
 def readApplication ( applicationDict ):
     MIN_ID = 0
     MAX_ID = 9999
-    NUM_SEPARATOR = 81
 
     companyName = input ('Enter company name to search: ' )
 
@@ -184,10 +199,7 @@ def readApplication ( applicationDict ):
         print (f'There are {len(applicationDict[companyName])}',
                f'recorded job applications to {companyName}.')
 
-        print ('-' * NUM_SEPARATOR )
-        for application in applicationDict[companyName]:
-            print ( f'{application.getJobID ( )} - {application.getTitle()}')
-        print ('-' * NUM_SEPARATOR)
+        printAppList ( applicationDict, companyName )
 
         try:
             selectedID = getValidInteger(MIN_ID, MAX_ID,
@@ -213,8 +225,7 @@ def deleteApplication ( applicationDict ):
     companyName = input ('Enter company name to search: ' )
 
     if companyName in applicationDict.keys ( ):
-        for application in applicationDict[companyName]:
-            print ( application )
+        printAppList ( applicationDict, companyName )
 
         try:
             outFile = open ('jobChartData.pickle', 'wb+' )
@@ -270,7 +281,6 @@ def addApplication ( applicationDict ):
 #*******************************************************************************
 
 def updateApplication ( applicationDict ):
-    NUM_SEPARATOR = 81
     MIN_ID = 0
     MAX_ID = 9999
     MIN_STATUS = -1
@@ -280,10 +290,7 @@ def updateApplication ( applicationDict ):
     selectedID = -1
     outFile = None
 
-    print ('-' * NUM_SEPARATOR )
-    for company in applicationDict.keys ( ):
-        print ( company )
-    print ('-' * NUM_SEPARATOR )
+    printAppList ( applicationDict, companyName = None )
 
     companyName = input('Enter a company name from above list \
                          \nto update an application: ')
@@ -295,10 +302,7 @@ def updateApplication ( applicationDict ):
                             application (\'-1\' to quit: )' )
         
     if companyName in applicationDict:
-        print ('-' * NUM_SEPARATOR )
-        for application in applicationDict[companyName]:
-            print ( f'{application.getJobID ( )} - {application.getTitle()}')
-        print ('-' * NUM_SEPARATOR)
+        printAppList ( applicationDict, companyName )
 
         selectedID = getValidInteger (MIN_ID, MAX_ID, 
                                      'Choose a job ID to update: ' )
