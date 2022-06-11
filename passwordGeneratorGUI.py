@@ -50,7 +50,7 @@ class MainGUI:
             #numDegrees = float ( self.ctemp_entry.get ( ) )
             resultLength =  8
             resultPassword = None
-            alphabet = string.ascii_letters + string.digits
+            alphabet = string.ascii_letters + string.digits + string.punctuation
             resultPassword = ''.join(secrets.choice(alphabet) for i in range(resultLength))
 
 
