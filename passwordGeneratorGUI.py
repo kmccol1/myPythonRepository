@@ -25,15 +25,18 @@ class MainGUI:
         self.bottom_frame = tkinter.Frame ( self.main_window )
 
         self.resultPassword_label = tkinter.Label ( self.top_frame, text = 'Result: ')
+        self.resultPassword_label.config(fg = "Green")
         self.resultPassword_entry = tkinter.Entry ( self.top_frame, width = 20 )
 
         self.generate_button = tkinter.Button ( self.top_frame, 
-                                                text = 'Generate: ', 
+                                                text = 'Generate: ',
+                                                relief = "ridge", 
                                                 command = self.generateButtonPressed )
 
         self.quit_button = tkinter.Button ( self.bottom_frame, 
                                             text = 'Quit', 
                                             command = self.main_window.destroy )
+        self.quit_button.config(fg = "Red")
 
         self.resultPassword_label.pack  ( side = 'left' )
         self.resultPassword_entry.pack ( side = 'left' )
