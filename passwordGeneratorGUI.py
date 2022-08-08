@@ -22,7 +22,7 @@ class MainGUI:
         self.mid_frame = tkinter.Frame ( self.main_window )
         self.bottom_frame = tkinter.Frame ( self.main_window )
 
-        self.resultPassword_label = tkinter.Label ( self.top_frame, text = 'Result: ')
+        self.resultPassword_label = tkinter.Label ( self.top_frame, text = 'Password Result: ')
         self.resultPassword_entry = tkinter.Entry ( self.top_frame, width = 10 )
 
         self.generate_button = tkinter.Button ( self.top_frame, 

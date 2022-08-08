@@ -28,7 +28,7 @@ for image in imageList:
 		print ( "Directory " , newPath , " created ")
 	else:
 		print ( "Directory " , newPath , " already exists." )
-
+ 
 	oldImagePath = os.path.join ( folderPath , image)
 	newImagePath = os.path.join ( newPath , image ) 
 	shutil.copy2 ( oldImagePath , newImagePath ) 
