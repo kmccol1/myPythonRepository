@@ -10,6 +10,8 @@
 import tkinter
 import string
 import secrets
+import random
+
 
 #****************************************************************************************************
 
@@ -22,16 +24,24 @@ class MainGUI:
         self.mid_frame = tkinter.Frame ( self.main_window )
         self.bottom_frame = tkinter.Frame ( self.main_window )
 
+<<<<<<< HEAD
         self.resultPassword_label = tkinter.Label ( self.top_frame, text = 'Password Result: ')
         self.resultPassword_entry = tkinter.Entry ( self.top_frame, width = 10 )
+=======
+        self.resultPassword_label = tkinter.Label ( self.top_frame, text = 'Result: ')
+        self.resultPassword_label.config(fg = "Green")
+        self.resultPassword_entry = tkinter.Entry ( self.top_frame, width = 20 )
+>>>>>>> e8806a5a0f430fefa6709a3abf57aca6ed703265
 
         self.generate_button = tkinter.Button ( self.top_frame, 
-                                                text = 'Generate: ', 
+                                                text = 'Generate: ',
+                                                relief = "ridge", 
                                                 command = self.generateButtonPressed )
 
         self.quit_button = tkinter.Button ( self.bottom_frame, 
                                             text = 'Quit', 
                                             command = self.main_window.destroy )
+        self.quit_button.config(fg = "Red")
 
         self.resultPassword_label.pack  ( side = 'left' )
         self.resultPassword_entry.pack ( side = 'left' )
@@ -48,7 +58,7 @@ class MainGUI:
 
     def generateButtonPressed ( self ):
             #numDegrees = float ( self.ctemp_entry.get ( ) )
-            resultLength =  8
+            resultLength =  random.randint(8,16)
             resultPassword = None
             alphabet = string.ascii_letters + string.digits + string.punctuation
             resultPassword = ''.join(secrets.choice(alphabet) for i in range(resultLength))
