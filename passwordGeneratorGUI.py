@@ -5,6 +5,9 @@
 #       Date:         13 August 2022
 #       Description: 
 #               This program uses a GUI to generate passwords.
+#               ## TODO ##
+#               1. Add a sliding selector to allow user to determine the random password length.
+#               2. Implement save and copy functionalities.
 #
 #****************************************************************************************************
 
